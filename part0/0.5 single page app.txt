@@ -1,0 +1,11 @@
+title Single Page App
+
+browser -> server: HTTP GET /spa
+server -> browser: Returns 200 - and the HTML for the site (as well as main.css and spa.js)
+
+browser -> server: HTTP GET /data.json
+server -> browser: Returns 200 with the note content in a JSON
+
+note left of browser: Content is created in the browser with JavaScript.
+
+end note
