@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 const Header = (props) => (
-    <h1>{props.name}</h1>
+    < h1 > {props.name}</h1>
 )
 
 const Part = (props) => {
@@ -16,7 +16,7 @@ const Part = (props) => {
 const Content = (props) => {
 
     const courses = props.parts.map(part =>
-        <Part name={part.name} exercises={part.exercises} />)
+        <Part name={part.name} exercises={part.exercises} key={part.name} />)
 
     return (<div>{courses}</div>)
 
