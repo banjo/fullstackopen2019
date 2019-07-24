@@ -1,16 +1,25 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Button = ({onClick, text}) => {
+const Button = ({ onClick, text }) => {
     return (
         <button onClick={onClick} >{text}</button>
     )
 }
 
-const Statistics = ({good, neutral, bad}) => {
+const Statistic = ({ stat, text }) => {
+    return (
+        <tr>
+            <td>{text}</td>
+            <td>{stat}</td>
+        </tr>
+    )
+}
+
+const Statistics = ({ good, neutral, bad }) => {
     let all = good + neutral + bad
-    let average = (all===0) ? 0 : ((good*1)+(bad*-1))/all
-    let positive = (all===0) ? 0 : good/all
+    let average = (all === 0) ? 0 : ((good * 1) + (bad * -1)) / all
+    let positive = (all === 0) ? 0 : (good / all) * 100 + " %"
 
     if (all === 0) {
         return (
@@ -19,14 +28,16 @@ const Statistics = ({good, neutral, bad}) => {
     }
 
     return (
-        <div>
-            <div>good {good}</div>
-            <div>neutral {neutral}</div>
-            <div>bad {bad}</div>
-            <div>all {all}</div>
-            <div>average {average}</div>
-            <div>positive {positive}</div>
-        </div>
+        <table>
+            <tbody>
+                <Statistic stat={good} text="good" />
+                <Statistic stat={neutral} text="neutral" />
+                <Statistic stat={bad} text="bad" />
+                <Statistic stat={all} text="all" />
+                <Statistic stat={average} text="average" />
+                <Statistic stat={positive} text="positive" />
+            </tbody>
+        </table>
     )
 }
 
@@ -36,22 +47,18 @@ const App = () => {
     const [neutral, setNeutral] = useState(0)
     const [bad, setBad] = useState(0)
 
-    const addOne = (setter, mood) => () => {
-        setter(mood + 1)
-    }
-
     return (
-    <div>
-        <h1>give feedback</h1>
-        <Button onClick={addOne(setGood, good)} text={"good"} ></Button>
-        <Button onClick={addOne(setNeutral, neutral)} text={"neutral"} ></Button>
-        <Button onClick={addOne(setBad, bad)} text={"bad"} ></Button>
-        <h1>statistics</h1>
-        <Statistics good={good} neutral={neutral} bad={bad}/>
-    </div>
+        <div>
+            <h1>give feedback</h1>
+            <Button onClick={() => setGood(good + 1)} text={"good"} ></Button>
+            <Button onClick={() => setNeutral(neutral + 1)} text={"neutral"} ></Button>
+            <Button onClick={() => setBad(bad + 1)} text={"bad"} ></Button>
+            <h1>statistics</h1>
+            <Statistics good={good} neutral={neutral} bad={bad} />
+        </div>
     )
 }
 
-ReactDOM.render( < App / > ,
+ReactDOM.render(< App />,
     document.getElementById('root')
 )
