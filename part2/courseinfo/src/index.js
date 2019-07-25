@@ -1,10 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Course from './Course'
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
 
-const App = () => {
-    const course = {
+const courses = [
+    {
         name: "Half Stack application development",
+        id: 1,
         parts: [
             {
                 name: "Fundamentals of React",
@@ -19,13 +20,23 @@ const App = () => {
                 exercises: 14
             }
         ]
+    },
+    {
+        name: "Node.js",
+        id: 2,
+        parts: [
+            {
+                name: "Routing",
+                exercises: 3,
+                id: 1
+            },
+            {
+                name: "Middlewares",
+                exercises: 7,
+                id: 2
+            }
+        ]
     }
+];
 
-    return (
-        <div>
-            <Course course={course} />
-        </div>
-    )
-}
-
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App courses={courses} />, document.getElementById("root"));

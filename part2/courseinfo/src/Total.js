@@ -5,7 +5,11 @@ const Total = ({ course }) => {
         .map(part => part.exercises)
         .reduce((sum, current) => sum + current);
 
-    return <p> Number of exercises {total} </p>;
+    return (
+        <p>
+            <strong> Number of exercises {total}</strong>
+        </p>
+    );
 };
 
 export default Total;
