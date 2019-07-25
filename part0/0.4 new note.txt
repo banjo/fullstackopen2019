@@ -7,10 +7,10 @@ browser -> server: HTTP GET https://fullstack-exampleapp.herokuapp.com/notes
 server -> browser: Loads the HTML (main.js and main.css are loading in separate requests)
 
 browser -> server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
-server -> browser: Returns each note in a JSON file with content and deactivate
+server -> browser: Returns each note in a JSON file with content
 
 note over browser:
-JavaScript is used to create the list
-in the browser based on the JSON file.
+JavaScript is used to create the list on the webpage
+in the browser, based on the JSON file.
 
 end note

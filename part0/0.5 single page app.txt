@@ -6,6 +6,6 @@ server -> browser: Returns 200 - and the HTML for the site (as well as main.css 
 browser -> server: HTTP GET /data.json
 server -> browser: Returns 200 with the note content in a JSON
 
-note left of browser: Content is created in the browser with JavaScript.
+note left of browser: Content is created in the browser with JavaScript, based on the JSON file.
 
 end note

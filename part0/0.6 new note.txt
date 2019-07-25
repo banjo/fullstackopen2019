@@ -1,10 +1,10 @@
 title New note
 
-note left of browser: On click, JavaScript creates the note locally.
+note left of browser: On click, JavaScript creates the notes locally.
 
-browser->server: HTTP POST to /new_note_spa the: note information
+browser->server: HTTP POST to /new_note_spa with the note information
 
-note right of server: Adds the note the the list on the server
+note right of server: Adds the note to the list on the server
 
 server->browser: returns confirmation as JSON and 201 status
 
