@@ -3,6 +3,26 @@ import ReactDOM from 'react-dom'
 
 const Button = ({ action, name }) => (<button onClick={action} >{name}</button>)
 
+const TopAnecdote = ({ votes }) => {
+
+    let topScore = 0
+    let winner = 0
+
+    Object.keys(votes).forEach(key => {
+        if (votes[key] > topScore) {
+            winner = key
+            topScore = votes[key]
+        }
+    })
+
+    return (
+        <div>
+            <h1>Anecdote with most votes</h1>
+            <div>{anecdotes[winner]}</div>
+            <div>has {topScore} votes</div>
+        </div>
+    )
+}
 
 const App = ({ anecdotes }) => {
     const [selected, setSelected] = useState(0)
@@ -19,10 +39,12 @@ const App = ({ anecdotes }) => {
 
     return (
         <div>
-            <p>{anecdotes[selected]}</p>
-            <p>has {votes[selected]} votes</p>
+            <h1>Anecdote of the day</h1>
+            <div>{anecdotes[selected]}</div>
+            <div>has {votes[selected]} votes</div>
             <Button action={() => updateVotes(selected)} name="vote" />
             <Button action={() => updateSelected()} name="next anecdote" />
+            <TopAnecdote votes={votes} />
         </div>
     )
 }
