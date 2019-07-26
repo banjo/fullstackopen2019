@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Numbers from "./components/Numbers";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
 
 const App = () => {
     const [persons, setPersons] = useState([
@@ -35,43 +37,41 @@ const App = () => {
             number: newNumber
         };
 
-        // add contact and reset form
+        // update filter if search is active
+        if (filteredPersons.length > 0) {
+            setFilteredPersons(filteredPersons.concat(contact));
+        }
+
+        // add contact to phonebook and reset form
         setPersons(persons.concat(contact));
         setNewName("");
         setNewNumber("");
     };
-    const handleNameChange = event => setNewName(event.target.value);
-    const handleNumberChange = event => setNewNumber(event.target.value);
-    const handleFilterChange = event => {
-        setNewFilter(event.target.value);
-
-        let filter = event.target.value;
-        const filtered = persons.filter(person =>
-            person.name.toLowerCase().includes(filter.toLowerCase())
-        );
-        setFilteredPersons(filtered);
-    };
 
     return (
         <div>
-            <h2>Phonebook</h2>
-            filter shown with{" "}
-            <input value={newFilter} onChange={handleFilterChange} />
+            <h1>Phonebook</h1>
+            <Filter
+                value={newFilter}
+                setNewFilter={setNewFilter}
+                setFilteredPersons={setFilteredPersons}
+                persons={persons}
+            />
+
             <h2>Add a new contact</h2>
-            <form onSubmit={addPerson}>
-                <div>
-                    name: <input value={newName} onChange={handleNameChange} />
-                </div>
-                <div>
-                    number:
-                    <input value={newNumber} onChange={handleNumberChange} />
-                </div>
-                <div>
-                    <button type="submit">add</button>
-                </div>
-            </form>
-            <Numbers phonebook={persons} filter={filteredPersons} />
-            {/* TODO: FIX FILTER */}
+            <PersonForm
+                addPerson={addPerson}
+                newName={newName}
+                setNewName={setNewName}
+                newNumber={newNumber}
+                setNewNumber={setNewNumber}
+            />
+            <h2>Numbers</h2>
+            <Numbers
+                phonebook={persons}
+                filteredPersons={filteredPersons}
+                newFilter={newFilter}
+            />
         </div>
     );
 };
