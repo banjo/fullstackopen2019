@@ -3,7 +3,7 @@ import axios from "axios";
 import Countries from "./Countries";
 
 const Results = ({ query, setQuery, countries, setCountries }) => {
-    // get data from api
+    // get country data from api
     useEffect(() => {
         axios
             .get(`https://restcountries.eu/rest/v2/name/${query}`)
