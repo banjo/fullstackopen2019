@@ -1,10 +1,8 @@
 import React from "react";
 
 const Countries = ({ countries }) => {
-    let countriesToShow = [];
-
     if (countries.length > 1) {
-        countriesToShow = countries.map(country => <div>{country.name}</div>);
+        return countries.map(country => <div>{country.name}</div>);
     } else {
         let country = countries[0];
         return (
@@ -16,11 +14,27 @@ const Countries = ({ countries }) => {
                 </div>
                 <div>capital {country.capital}</div>
                 <div>population {country.population}</div>
+                <div>
+                    <h2>Languages</h2>
+                </div>
+                <div>
+                    <ul>
+                        {country.languages.map(language => (
+                            <li>{language.name}</li>
+                        ))}
+                    </ul>
+                </div>
+                <div>
+                    <img
+                        src={country.flag}
+                        alt="country flag"
+                        heigth="100"
+                        width="100"
+                    />
+                </div>
             </div>
         );
     }
-
-    return countriesToShow;
 };
 
 export default Countries;

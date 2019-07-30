@@ -18,14 +18,15 @@ const Results = ({ query, countries, setCountries }) => {
     }, [countries, setCountries, query]);
 
     // rule for too many results in the api
-    let tooManyResults =
-        countries.length > 10 || countries.length === 0 ? true : false;
+    let tooManyResults = countries.length > 10 ? true : false;
 
     // !error handling
     console.log(countries);
 
     // return countries if matches are below 10
-    if (tooManyResults) {
+    if (countries.length === 0) {
+        return "";
+    } else if (tooManyResults) {
         return "Too many matches, specify another filter";
     } else {
         return <Countries countries={countries} />;
