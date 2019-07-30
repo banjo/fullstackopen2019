@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import phonebook from "./services/phonebook";
 import Numbers from "./components/Numbers";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
@@ -12,11 +13,16 @@ const App = () => {
     const [filteredPersons, setFilteredPersons] = useState([]);
 
     // effect hook for json server
+
+    // useEffect(() => {
+    //     axios.get("http://localhost:3001/persons").then(response => {
+    //         setPersons(response.data);
+    //     });
+    // }, []);
+
     useEffect(() => {
-        axios.get("http://localhost:3001/persons").then(response => {
-            setPersons(response.data);
-        });
-    }, []);
+        phonebook.getAll.then(phonebook => setPersons(phonebook));
+    });
 
     // add person on click
     const addPerson = event => {
