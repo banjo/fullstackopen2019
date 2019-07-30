@@ -8,7 +8,7 @@ const App = () => {
     return (
         <div>
             <Find search={search} setSearch={setSearch} />
-            <Results query={search} countries={countries} setCountries={setCountries} />
+            <Results query={search} setQuery={setSearch} countries={countries} setCountries={setCountries} />
         </div>
     );
 };
