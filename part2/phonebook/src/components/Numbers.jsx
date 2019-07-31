@@ -20,11 +20,7 @@ const Numbers = ({ phonebook, filteredPersons, newFilter }) => {
         (newFilter.length > 0 && filteredPersons.length > 0) ||
         !(filteredPersons.length === 0 && newFilter.length === 0);
 
-    return (
-        <div>
-            {result ? filtered : names}
-        </div>
-    );
+    return <div>{result ? filtered : names}</div>;
 };
 
 export default Numbers;

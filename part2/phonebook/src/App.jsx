@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import phonebook from "./services/phonebook";
 import Numbers from "./components/Numbers";
 import Filter from "./components/Filter";
@@ -13,16 +12,11 @@ const App = () => {
     const [filteredPersons, setFilteredPersons] = useState([]);
 
     // effect hook for json server
-
-    // useEffect(() => {
-    //     axios.get("http://localhost:3001/persons").then(response => {
-    //         setPersons(response.data);
-    //     });
-    // }, []);
-
     useEffect(() => {
-        phonebook.getAll.then(phonebook => setPersons(phonebook));
-    });
+        phonebook.getAll().then(phonebook => {
+            setPersons(phonebook);
+        });
+    }, []);
 
     // add person on click
     const addPerson = event => {
@@ -44,7 +38,8 @@ const App = () => {
         // create contact
         const contact = {
             name: newName,
-            number: newNumber
+            number: newNumber,
+            id: persons.length + 1
         };
 
         // update filter if search is active
@@ -52,10 +47,15 @@ const App = () => {
             setFilteredPersons(filteredPersons.concat(contact));
         }
 
-        // add contact to phonebook and reset form
-        setPersons(persons.concat(contact));
-        setNewName("");
-        setNewNumber("");
+        // add to backend server and to webpage
+        phonebook
+            .add(contact)
+            .then(contact => {
+                setPersons(persons.concat(contact));
+                setNewName("");
+                setNewNumber("");
+            })
+            .catch(contact => alert(`Could not add ${contact.name}`));
     };
 
     return (
