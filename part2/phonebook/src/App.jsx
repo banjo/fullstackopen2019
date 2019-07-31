@@ -18,14 +18,66 @@ const App = () => {
         });
     }, []);
 
+    // update the contact and forms locally
+    let fixContact = contact => {
+        setPersons(persons.concat(contact));
+    };
+
+    // update the filter with new addition
+    let updateFilter = contact => {
+        if (filteredPersons.length > 0) {
+            setFilteredPersons(filteredPersons.concat(contact));
+        }
+    };
+
+    // update filter with changing number
+    let updateFilterForNewNumber = contact => {
+        setFilteredPersons(
+            filteredPersons.map(person =>
+                person.id === contact.id ? contact : person
+            )
+        );
+    };
+
     // add person on click
     const addPerson = event => {
         event.preventDefault();
         const allNames = persons.map(person => person.name);
 
-        // Warning if duplicate
+        // create contact
+        const contact = {
+            name: newName,
+            number: newNumber,
+            id: persons.length + 1
+        };
+
+        // if duplicate, update number
         if (allNames.includes(newName)) {
-            alert(`${newName} is already added to the phonebook`);
+            if (
+                window.confirm(
+                    `${newName} is already added to the phonebook, would you like to update the number?`
+                )
+            ) {
+                // change the ID of contact to the ID of the person who should be changed
+                contact.id = persons.filter(
+                    person => person.name === contact.name
+                )[0].id;
+
+                // update filtered results
+                updateFilterForNewNumber(contact);
+
+                // add to phonebook
+                phonebook
+                    .updateContact(contact)
+                    .then(() =>
+                        setPersons(
+                            persons.map(person =>
+                                person.id === contact.id ? contact : person
+                            )
+                        )
+                    )
+                    .catch(error => alert(`Could not update number`));
+            }
             return;
         }
 
@@ -35,25 +87,18 @@ const App = () => {
             return;
         }
 
-        // create contact
-        const contact = {
-            name: newName,
-            number: newNumber,
-            id: persons.length + 1
-        };
-
         // update filter if search is active
-        if (filteredPersons.length > 0) {
-            setFilteredPersons(filteredPersons.concat(contact));
-        }
+        updateFilter(contact);
+
+        // reset forms
+        setNewName("");
+        setNewNumber("");
 
         // add to backend server and to webpage
         phonebook
             .add(contact)
             .then(contact => {
-                setPersons(persons.concat(contact));
-                setNewName("");
-                setNewNumber("");
+                fixContact(contact);
             })
             .catch(contact => alert(`Could not add ${contact.name}`));
     };

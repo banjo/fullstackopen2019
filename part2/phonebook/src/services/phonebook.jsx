@@ -13,4 +13,10 @@ const deleteContact = id => {
     return axios.delete(baseUrl + `/${id}`);
 };
 
-export default { getAll, add, deleteContact };
+const updateContact = person => {
+    return axios
+        .put(baseUrl + `/${person.id}`, person)
+        .then(response => response.data);
+};
+
+export default { getAll, add, deleteContact, updateContact };
