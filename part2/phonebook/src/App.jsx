@@ -78,9 +78,11 @@ const App = () => {
             />
             <h2>Numbers</h2>
             <Numbers
-                phonebook={persons}
+                contacts={persons}
                 filteredPersons={filteredPersons}
+                setFilteredPersons={setFilteredPersons}
                 newFilter={newFilter}
+                setContacts={setPersons}
             />
         </div>
     );

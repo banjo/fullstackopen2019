@@ -9,4 +9,8 @@ const add = person => {
     return axios.post(baseUrl, person).then(response => response.data);
 };
 
-export default { getAll, add };
+const deleteContact = id => {
+    return axios.delete(baseUrl + `/${id}`);
+};
+
+export default { getAll, add, deleteContact };
