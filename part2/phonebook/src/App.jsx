@@ -3,6 +3,7 @@ import phonebook from "./services/phonebook";
 import Numbers from "./components/Numbers";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
+import Notification from "./components/Notification";
 
 const App = () => {
     const [persons, setPersons] = useState([]);
@@ -10,6 +11,7 @@ const App = () => {
     const [newNumber, setNewNumber] = useState("");
     const [newFilter, setNewFilter] = useState("");
     const [filteredPersons, setFilteredPersons] = useState([]);
+    const [successmessage, setSuccessMessage] = useState(null);
 
     // effect hook for json server
     useEffect(() => {
@@ -19,19 +21,19 @@ const App = () => {
     }, []);
 
     // update the contact and forms locally
-    let fixContact = contact => {
+    const fixContact = contact => {
         setPersons(persons.concat(contact));
     };
 
     // update the filter with new addition
-    let updateFilter = contact => {
+    const updateFilter = contact => {
         if (filteredPersons.length > 0) {
             setFilteredPersons(filteredPersons.concat(contact));
         }
     };
 
     // update filter with changing number
-    let updateFilterForNewNumber = contact => {
+    const updateFilterForNewNumber = contact => {
         setFilteredPersons(
             filteredPersons.map(person =>
                 person.id === contact.id ? contact : person
@@ -99,6 +101,8 @@ const App = () => {
             .add(contact)
             .then(contact => {
                 fixContact(contact);
+                setSuccessMessage(`Successfully added ${newName}`);
+                setTimeout(() => setSuccessMessage(null), 5000);
             })
             .catch(contact => alert(`Could not add ${contact.name}`));
     };
@@ -114,6 +118,7 @@ const App = () => {
             />
 
             <h2>Add a new contact</h2>
+            <Notification message={successmessage} />
             <PersonForm
                 addPerson={addPerson}
                 newName={newName}
