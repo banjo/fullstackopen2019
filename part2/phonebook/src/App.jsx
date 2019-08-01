@@ -11,7 +11,7 @@ const App = () => {
     const [newNumber, setNewNumber] = useState("");
     const [newFilter, setNewFilter] = useState("");
     const [filteredPersons, setFilteredPersons] = useState([]);
-    const [successmessage, setSuccessMessage] = useState(null);
+    const [infoBox, setInfoBox] = useState({ message: null, isSuccess: true });
 
     // effect hook for json server
     useEffect(() => {
@@ -78,7 +78,37 @@ const App = () => {
                             )
                         )
                     )
-                    .catch(error => alert(`Could not update number`));
+                    .catch(error => {
+                        if (error.response.status === 404) {
+                            setInfoBox({
+                                message: `Information of ${
+                                    contact.name
+                                } has already been removed from the server.`,
+                                isSucess: false
+                            });
+                            setTimeout(
+                                () =>
+                                    setInfoBox({
+                                        message: null,
+                                        isSuccess: false
+                                    }),
+                                5000
+                            );
+                        } else {
+                            setInfoBox({
+                                message: `Could not update number`,
+                                isSucess: false
+                            });
+                            setTimeout(
+                                () =>
+                                    setInfoBox({
+                                        message: null,
+                                        isSuccess: false
+                                    }),
+                                5000
+                            );
+                        }
+                    });
             }
             return;
         }
@@ -101,10 +131,18 @@ const App = () => {
             .add(contact)
             .then(contact => {
                 fixContact(contact);
-                setSuccessMessage(`Successfully added ${newName}`);
-                setTimeout(() => setSuccessMessage(null), 5000);
+                setInfoBox({
+                    message: `Successfully added ${newName}`,
+                    isSuccess: true
+                });
+                setTimeout(
+                    () => setInfoBox({ message: null, isSuccess: false }),
+                    5000
+                );
             })
-            .catch(contact => alert(`Could not add ${contact.name}`));
+            .catch(error => {
+                alert(`Could not add ${contact.name}`);
+            });
     };
 
     return (
@@ -118,7 +156,7 @@ const App = () => {
             />
 
             <h2>Add a new contact</h2>
-            <Notification message={successmessage} />
+            <Notification message={infoBox} />
             <PersonForm
                 addPerson={addPerson}
                 newName={newName}
