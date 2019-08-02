@@ -1,0 +1,19 @@
+{
+    "name": "backend",
+    "version": "1.0.0",
+    "description": "backend for phonebook",
+    "main": "index.jsx",
+    "scripts": {
+        "test": "this is a test",
+        "start": "node index.jsx",
+        "watch": "nodemon index.jsx"
+    },
+    "author": "Anton Ödman",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.17.1"
+    },
+    "devDependencies": {
+        "nodemon": "^1.19.1"
+    }
+}
