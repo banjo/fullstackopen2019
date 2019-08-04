@@ -8,6 +8,16 @@ phonebook = [
     { name: "Dracunios", number: "44422", id: 3 }
 ];
 
+// API FOR INFO
+app.get("/info", (req, res) => {
+    const str = res.send(
+        `Phonebook has info of ${phonebook.length} people
+        <br>
+        ${new Date()}`
+    );
+});
+
+// API FOR PHONEBOOK
 app.get("/api/persons", (req, res) => {
     res.json(phonebook);
 });
@@ -23,6 +33,7 @@ app.get("/api/persons/:id", (req, res) => {
     }
 });
 
+// PORT TO LISTEN TO
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
