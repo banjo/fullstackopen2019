@@ -19,11 +19,9 @@ const generateId = () => {
     while (true) {
         newId = Math.floor(Math.random() * 100) + 1;
 
-        if (currentIds.includes(newId)) {
-            continue;
+        if (!currentIds.includes(newId)) {
+            break;
         }
-
-        break;
     }
 
     return newId;
@@ -59,9 +57,25 @@ app.get("/api/persons/:id", (req, res) => {
 app.post("/api/persons", (req, res) => {
     const newContact = req.body;
 
+    // check for content
     if (!newContact) {
         return res.status(400).json({
             error: "content is missing"
+        });
+    }
+
+    // check for name and number
+    if (!newContact.name || !newContact.number) {
+        return res.status(400).json({
+            error: "name or number is missing"
+        });
+    }
+
+    // check if contact exists
+    const currentContacts = phonebook.map(contact => contact.name);
+    if (currentContacts.includes(newContact.name)) {
+        return res.status(400).json({
+            error: "the name already exists in the phonebook"
         });
     }
 
