@@ -1,12 +1,24 @@
 const express = require("express");
-const app = express();
-const PORT = 3001;
-
+var morgan = require("morgan");
 const bodyParser = require("body-parser");
+
+const app = express();
 app.use(bodyParser.json());
 
-var morgan = require("morgan");
-app.use(morgan("tiny"));
+const PORT = 3001;
+const TOKEN =
+    ":method :url :status :res[content-length] - :response-time ms :contact";
+
+// reset morgan to default after post request
+const resetMorgan = (req, res, next) => {
+    morgan.token("contact", (req, res) => "");
+    next();
+};
+app.use(resetMorgan);
+
+// setup temp morgan tokan
+morgan.token("contact", (req, res) => "");
+app.use(morgan(TOKEN));
 
 phonebook = [
     { name: "Antonio", number: "0500050", id: 1 },
@@ -59,6 +71,9 @@ app.get("/api/persons/:id", (req, res) => {
 // ADD ENTRY
 app.post("/api/persons", (req, res) => {
     const newContact = req.body;
+
+    // configure morgan for post request
+    morgan.token("contact", (req, res) => JSON.stringify(newContact));
 
     // check for content
     if (!newContact) {
