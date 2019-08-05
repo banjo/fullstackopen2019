@@ -22,6 +22,7 @@ app.get("/api/persons", (req, res) => {
     res.json(phonebook);
 });
 
+// GET ENTRY
 app.get("/api/persons/:id", (req, res) => {
     const id = Number(req.params.id);
     const contact = phonebook.find(phoneContact => phoneContact.id === id);
@@ -31,6 +32,15 @@ app.get("/api/persons/:id", (req, res) => {
     } else {
         res.status(404).end();
     }
+});
+
+// DELETE ENTRY
+app.delete("/api/persons/:id", (req, res) => {
+    const id = Number(req.params.id);
+    phonebook = phonebook.filter(contact => contact.id !== id);
+
+    res.send(JSON.stringify(phonebook));
+    res.status(204).end();
 });
 
 // PORT TO LISTEN TO
