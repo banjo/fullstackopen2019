@@ -1,12 +1,12 @@
 const express = require("express");
 var morgan = require("morgan");
 const bodyParser = require("body-parser");
-
 const cors = require("cors");
-app.use(cors());
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
+app.use(express.static("build"));
 
 const PORT = process.env.PORT || 3001;
 const TOKEN =
