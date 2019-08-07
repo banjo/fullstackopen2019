@@ -119,18 +119,21 @@ const App = () => {
             return;
         }
 
+        // TODO: FIX UPDATE FILTER
         // update filter if search is active
-        updateFilter(contact);
+        //! updateFilter(contact);
 
         // reset forms
         setNewName("");
         setNewNumber("");
 
+        // add contact locally
+        fixContact(contact);
+
         // add to backend server and to webpage
         phonebook
             .add(contact)
             .then(contact => {
-                fixContact(contact);
                 setInfoBox({
                     message: `Successfully added ${newName}`,
                     isSuccess: true
