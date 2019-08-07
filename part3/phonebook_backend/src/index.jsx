@@ -2,10 +2,13 @@ const express = require("express");
 var morgan = require("morgan");
 const bodyParser = require("body-parser");
 
+const cors = require("cors");
+app.use(cors());
+
 const app = express();
 app.use(bodyParser.json());
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const TOKEN =
     ":method :url :status :res[content-length] - :response-time ms :contact";
 
