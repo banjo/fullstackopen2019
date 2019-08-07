@@ -6,7 +6,10 @@
     "scripts": {
         "test": "this is a test",
         "start": "node src/index.jsx",
-        "watch": "nodemon src/index.jsx"
+        "watch": "nodemon src/index.jsx",
+        "build:ui": "rm -rf build && cd ../../part2/phonebook && npm run build --prod && cp -r build ../../part3/phonebook_backend/",
+        "deploy": "git push heroku master",
+        "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy"
     },
     "author": "Anton Ödman",
     "license": "ISC",
