@@ -27,7 +27,10 @@ const App = () => {
 
     // update the filter with new addition
     const updateFilter = contact => {
-        if (filteredPersons.length > 0) {
+        // if (filteredPersons.length > 0) {
+        //     setFilteredPersons(filteredPersons.concat(contact));
+        // }
+        if (newName.includes(newFilter) && newFilter.length > 0) {
             setFilteredPersons(filteredPersons.concat(contact));
         }
     };
@@ -46,12 +49,19 @@ const App = () => {
         event.preventDefault();
         const allNames = persons.map(person => person.name);
 
+        // reset filter if it has length 0
+        if (newFilter.length === 0) {
+            setFilteredPersons([]);
+        }
+
         // create contact
         const contact = {
             name: newName,
             number: newNumber,
             id: persons.length + 1
         };
+
+        console.log("new contact before id change", contact);
 
         // if duplicate, update number
         if (allNames.includes(newName)) {
@@ -68,18 +78,24 @@ const App = () => {
                 // update filtered results
                 updateFilterForNewNumber(contact);
 
+                // TODO: FIX BUG WHERE YOU CANT UPDATE NUMBER
+                console.log("new contact after id change", contact);
+
                 // add to phonebook
                 phonebook
                     .updateContact(contact)
-                    .then(() =>
+                    .then(() => {
+
                         setPersons(
                             persons.map(person =>
                                 person.id === contact.id ? contact : person
                             )
-                        )
-                    )
+                        );
+                    })
                     .catch(error => {
                         if (error.response.status === 404) {
+                            console.log(error);
+
                             setInfoBox({
                                 message: `Information of ${
                                     contact.name
@@ -114,14 +130,13 @@ const App = () => {
         }
 
         // Warning if empty
-        if (newName === "") {
+        if (newName === "" || newNumber === "") {
             alert(`You cannot add an empty string`);
             return;
         }
 
-        // TODO: FIX UPDATE FILTER
         // update filter if search is active
-        //! updateFilter(contact);
+        updateFilter(contact);
 
         // reset forms
         setNewName("");

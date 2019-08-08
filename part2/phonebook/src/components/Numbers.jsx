@@ -8,13 +8,6 @@ const Numbers = ({
     newFilter,
     setContacts
 }) => {
-    //! FIX PROBLEM
-    console.log("contacts");
-    console.table(contacts);
-
-    console.log("filitered");
-    console.table(filteredPersons);
-
     const deleteContact = person => () => {
         if (window.confirm(`Delete ${person.name}?`)) {
             phonebook
