@@ -1,7 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 var morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const Contact = require("./models/contact");
 
 const app = express();
 app.use(bodyParser.json());
@@ -23,28 +25,6 @@ app.use(resetMorgan);
 morgan.token("contact", (req, res) => "");
 app.use(morgan(TOKEN));
 
-phonebook = [
-    { name: "Antonio", number: "0500050", id: 1 },
-    { name: "Dubio", number: "3322", id: 2 },
-    { name: "Dracunios", number: "44422", id: 3 }
-];
-
-// function to generate a new ID
-const generateId = () => {
-    const currentIds = phonebook.map(contact => contact.id);
-    let newId;
-
-    while (true) {
-        newId = Math.floor(Math.random() * 100) + 1;
-
-        if (!currentIds.includes(newId)) {
-            break;
-        }
-    }
-
-    return newId;
-};
-
 // API FOR INFO
 app.get("/info", (req, res) => {
     const str = res.send(
@@ -56,7 +36,9 @@ app.get("/info", (req, res) => {
 
 // API FOR PHONEBOOK
 app.get("/api/persons", (req, res) => {
-    res.json(phonebook);
+    Contact.find({}).then(contacts => {
+        res.json(contacts);
+    });
 });
 
 // GET ENTRY
@@ -92,23 +74,14 @@ app.post("/api/persons", (req, res) => {
         });
     }
 
-    // check if contact exists
-    const currentContacts = phonebook.map(contact => contact.name);
-    if (currentContacts.includes(newContact.name)) {
-        return res.status(400).json({
-            error: "the name already exists in the phonebook"
-        });
-    }
-
-    const contact = {
+    const contact = new Contact({
         name: newContact.name,
-        number: newContact.number,
-        id: generateId()
-    };
+        number: newContact.number
+    });
 
-    phonebook = phonebook.concat(contact);
-
-    res.json(phonebook);
+    contact.save().then(savedContact => {
+        res.json(savedContact.toJSON());
+    });
 });
 
 // DELETE ENTRY
