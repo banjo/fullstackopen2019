@@ -77,7 +77,7 @@ app.get("/api/persons/:id", (req, res, next) => {
 });
 
 // ADD ENTRY
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res, next) => {
     const newContact = req.body;
 
     // configure morgan for post request
@@ -102,9 +102,12 @@ app.post("/api/persons", (req, res) => {
         number: newContact.number
     });
 
-    contact.save().then(savedContact => {
-        res.json(savedContact.toJSON());
-    });
+    contact
+        .save()
+        .then(savedContact => {
+            res.json(savedContact.toJSON());
+        })
+        .catch(error => next(error));
 });
 
 // UPDATE ENTRY
@@ -147,6 +150,8 @@ const errorHandler = (error, request, response, next) => {
 
     if (error.name === "CastError" && error.kind == "ObjectId") {
         return response.status(400).send({ error: "malformatted id" });
+    } else if (error.name === "ValidationError") {
+        return response.status(400).json({ error: error.message });
     }
 
     next(error);

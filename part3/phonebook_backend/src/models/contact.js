@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-
+const uniqueValidator = require("mongoose-unique-validator");
 mongoose.set("useFindAndModify", false);
 
 // save URL as a variable
@@ -11,9 +11,10 @@ mongoose.connect(url, { useNewUrlParser: true });
 
 // create schema for contact
 const contactSchema = new mongoose.Schema({
-    name: String,
-    number: String
+    name: { type: String, required: true, unique: true },
+    number: { type: String, required: true, unique: true }
 });
+contactSchema.plugin(uniqueValidator);
 
 // update ID to string
 contactSchema.set("toJSON", {
