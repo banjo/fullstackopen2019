@@ -109,8 +109,8 @@ app.post("/api/persons", (req, res) => {
 
 // UPDATE ENTRY
 app.put("/api/persons/:id", (req, res, next) => {
-    const body = request.body;
-    const id = requests.params.id;
+    const body = req.body;
+    const id = req.params.id;
 
     const contact = {
         name: body.name,

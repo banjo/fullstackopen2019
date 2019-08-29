@@ -9,7 +9,6 @@ const Numbers = ({
     setContacts
 }) => {
     const deleteContact = person => () => {
-        console.log(person);
         if (window.confirm(`Delete ${person.name}?`)) {
             phonebook
                 .deleteContact(person.id)

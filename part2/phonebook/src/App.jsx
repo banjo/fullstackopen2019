@@ -60,8 +60,6 @@ const App = () => {
             number: newNumber
         };
 
-        console.log("new contact before id change", contact);
-
         // if duplicate, update number
         if (allNames.includes(newName)) {
             if (
@@ -76,9 +74,6 @@ const App = () => {
 
                 // update filtered results
                 updateFilterForNewNumber(contact);
-
-                // TODO: FIX BUG WHERE YOU CANT UPDATE NUMBER
-                console.log("new contact after id change", contact);
 
                 // add to phonebook
                 phonebook
