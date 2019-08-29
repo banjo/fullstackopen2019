@@ -20,11 +20,6 @@ const App = () => {
         });
     }, []);
 
-    // update the contact and forms locally
-    const fixContact = contact => {
-        setPersons(persons.concat(contact));
-    };
-
     // update the filter with new addition
     const updateFilter = contact => {
         // if (filteredPersons.length > 0) {
@@ -126,18 +121,13 @@ const App = () => {
             return;
         }
 
-        // update filter if search is active
-
-        // add contact locally
-        // fixContact(contact);
-
-        // TODO: FIX not adding directly and error box after fail
+        // TODO: error box after fail
         // add to backend server and to webpage
         phonebook
             .add(contact)
             .then(contact => {
                 // reset forms
-                setPersons([...persons], contact);
+                setPersons(persons.concat(contact));
                 updateFilter(contact);
                 setNewName("");
                 setNewNumber("");
@@ -155,13 +145,15 @@ const App = () => {
                 );
             })
             .catch(error => {
-                alert(`Could not add ${contact.name}`);
+                setInfoBox({
+                    message: error.response.data.error.toString(),
+                    isSuccess: false
+                });
+                setTimeout(
+                    () => setInfoBox({ message: null, isSuccess: true }),
+                    5000
+                );
             });
-
-        // download latest contacts to get correct ID
-        // phonebook.getAll().then(phonebook => {
-        //     setPersons(phonebook);
-        // });
     };
 
     return (
