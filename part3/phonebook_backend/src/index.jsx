@@ -8,11 +8,22 @@ const Contact = require("./models/contact");
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
-app.use(express.static("build"));
 
 const PORT = process.env.PORT || 3001;
 const TOKEN =
     ":method :url :status :res[content-length] - :response-time ms :contact";
+
+// logger
+const requestLogger = (request, response, next) => {
+    console.log("Method:", request.method);
+    console.log("Path:  ", request.path);
+    console.log("Body:  ", request.body);
+    console.log("---");
+    next();
+};
+
+app.use(requestLogger);
+app.use(express.static("build"));
 
 // reset morgan to default after post request
 const resetMorgan = (req, res, next) => {
@@ -27,30 +38,42 @@ app.use(morgan(TOKEN));
 
 // API FOR INFO
 app.get("/info", (req, res) => {
-    const str = res.send(
-        `Phonebook has info of ${phonebook.length} people
-        <br>
-        ${new Date()}`
-    );
+    Contact.find({})
+        .then(contacts => {
+            const str = res.send(
+                `Phonebook has info of ${contacts.length} people
+            <br>
+            ${new Date()}`
+            );
+        })
+        .catch(error => console.log(error));
 });
 
 // API FOR PHONEBOOK
 app.get("/api/persons", (req, res) => {
-    Contact.find({}).then(contacts => {
-        res.json(contacts);
-    });
+    Contact.find({})
+        .then(contacts => {
+            res.json(contacts);
+        })
+        .catch(error => {
+            console.log(error);
+            res.status(404).end();
+        });
 });
 
 // GET ENTRY
-app.get("/api/persons/:id", (req, res) => {
-    const id = Number(req.params.id);
-    const contact = phonebook.find(phoneContact => phoneContact.id === id);
+app.get("/api/persons/:id", (req, res, next) => {
+    const id = req.params.id;
 
-    if (contact) {
-        res.json(contact);
-    } else {
-        res.status(404).end();
-    }
+    Contact.findById(id)
+        .then(contact => {
+            if (contact) {
+                res.json(contact.toJSON());
+            } else {
+                res.status(204).end();
+            }
+        })
+        .catch(error => next(error));
 });
 
 // ADD ENTRY
@@ -84,14 +107,51 @@ app.post("/api/persons", (req, res) => {
     });
 });
 
-// DELETE ENTRY
-app.delete("/api/persons/:id", (req, res) => {
-    const id = Number(req.params.id);
-    phonebook = phonebook.filter(contact => contact.id !== id);
+// UPDATE ENTRY
+app.put("/api/persons/:id", (req, res, next) => {
+    const body = request.body;
+    const id = requests.params.id;
 
-    res.send(JSON.stringify(phonebook));
-    res.status(204).end();
+    const contact = {
+        name: body.name,
+        number: body.number
+    };
+
+    Contact.findByIdAndUpdate(id, contact, { new: true })
+        .then(updatedContact => {
+            res.json(updatedContact.toJSON());
+        })
+        .catch(error => next(error));
 });
+
+// DELETE ENTRY
+app.delete("/api/persons/:id", (req, res, next) => {
+    const id = req.params.id;
+
+    Contact.findByIdAndRemove(id)
+        .then(result => {
+            res.status(204).end();
+        })
+        .catch(error => next(error));
+});
+
+// Unknown endpoint handler
+const unknownEndpoint = (req, res) => {
+    res.status(404).send({ error: "unknown endpoint" });
+};
+app.use(unknownEndpoint);
+
+// Error handler
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message);
+
+    if (error.name === "CastError" && error.kind == "ObjectId") {
+        return response.status(400).send({ error: "malformatted id" });
+    }
+
+    next(error);
+};
+app.use(errorHandler);
 
 // PORT TO LISTEN TO
 app.listen(PORT, () => {

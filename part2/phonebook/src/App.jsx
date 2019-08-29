@@ -57,8 +57,7 @@ const App = () => {
         // create contact
         const contact = {
             name: newName,
-            number: newNumber,
-            id: persons.length + 1
+            number: newNumber
         };
 
         console.log("new contact before id change", contact);
@@ -85,7 +84,6 @@ const App = () => {
                 phonebook
                     .updateContact(contact)
                     .then(() => {
-
                         setPersons(
                             persons.map(person =>
                                 person.id === contact.id ? contact : person
@@ -97,9 +95,7 @@ const App = () => {
                             console.log(error);
 
                             setInfoBox({
-                                message: `Information of ${
-                                    contact.name
-                                } has already been removed from the server.`,
+                                message: `Information of ${contact.name} has already been removed from the server.`,
                                 isSucess: false
                             });
                             setTimeout(
@@ -143,7 +139,7 @@ const App = () => {
         setNewNumber("");
 
         // add contact locally
-        fixContact(contact);
+        // fixContact(contact);
 
         // add to backend server and to webpage
         phonebook
@@ -161,6 +157,11 @@ const App = () => {
             .catch(error => {
                 alert(`Could not add ${contact.name}`);
             });
+
+        // download latest contacts to get correct ID
+        phonebook.getAll().then(phonebook => {
+            setPersons(phonebook);
+        });
     };
 
     return (

@@ -1,6 +1,8 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 
+mongoose.set("useFindAndModify", false);
+
 // save URL as a variable
 const url = process.env.MONGODB_URL;
 
