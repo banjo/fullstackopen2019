@@ -127,25 +127,30 @@ const App = () => {
         }
 
         // update filter if search is active
-        updateFilter(contact);
-
-        // reset forms
-        setNewName("");
-        setNewNumber("");
 
         // add contact locally
         // fixContact(contact);
 
+        // TODO: FIX not adding directly and error box after fail
         // add to backend server and to webpage
         phonebook
             .add(contact)
             .then(contact => {
+                // reset forms
+                setPersons([...persons], contact);
+                updateFilter(contact);
+                setNewName("");
+                setNewNumber("");
                 setInfoBox({
                     message: `Successfully added ${newName}`,
                     isSuccess: true
                 });
                 setTimeout(
-                    () => setInfoBox({ message: null, isSuccess: false }),
+                    () =>
+                        setInfoBox({
+                            message: null,
+                            isSuccess: false
+                        }),
                     5000
                 );
             })
@@ -154,9 +159,9 @@ const App = () => {
             });
 
         // download latest contacts to get correct ID
-        phonebook.getAll().then(phonebook => {
-            setPersons(phonebook);
-        });
+        // phonebook.getAll().then(phonebook => {
+        //     setPersons(phonebook);
+        // });
     };
 
     return (
