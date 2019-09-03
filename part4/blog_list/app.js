@@ -4,9 +4,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
-app.use(morgan("tiny"));
 const config = require("./utils/config");
-const Blog = require("./models/blog");
+const blogsRouter = require("./controllers/blogs");
 
 console.log("Connecting to", config.MONGODB_URL);
 
@@ -17,21 +16,9 @@ mongoose
         console.log("Error connecting to MongoDB:", error.message);
     });
 
+app.use(morgan("tiny"));
+app.use("/api", blogsRouter);
 app.use(cors());
 app.use(bodyParser.json());
-
-app.get("/api/blogs", (request, response) => {
-    Blog.find({}).then(blogs => {
-        response.json(blogs);
-    });
-});
-
-app.post("/api/blogs", (request, response) => {
-    const blog = new Blog(request.body);
-
-    blog.save().then(result => {
-        response.status(201).json(result);
-    });
-});
 
 module.exports = app;
