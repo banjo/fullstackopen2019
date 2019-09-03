@@ -5,7 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 app.use(morgan("tiny"));
-require("dotenv").config();
+const config = require("./utils/config");
 
 const blogSchema = mongoose.Schema({
     title: String,
@@ -24,11 +24,9 @@ blogSchema.set("toJSON", {
 
 const Blog = mongoose.model("Blog", blogSchema);
 
-const mongoUrl = process.env.MONGO_URL;
-
-console.log("Connecting to", mongoUrl);
+console.log("Connecting to", config.MONGODB_URL);
 mongoose
-    .connect(mongoUrl, { useNewUrlParser: true })
+    .connect(config.MONGODB_URL, { useNewUrlParser: true })
     .then(() => console.log("Conntected to MongoDB"))
     .catch(error => {
         console.log("Error connecting to MongoDB:", error.message);
