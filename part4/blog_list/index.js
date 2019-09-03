@@ -4,6 +4,8 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const morgan = require("morgan");
+app.use(morgan("tiny"));
 require("dotenv").config();
 
 const blogSchema = mongoose.Schema({
@@ -37,7 +39,6 @@ app.get("/api/blogs", (request, response) => {
 
 app.post("/api/blogs", (request, response) => {
     const blog = new Blog(request.body);
-    console.log("body", request.body);
 
     blog.save().then(result => {
         response.status(201).json(result);
