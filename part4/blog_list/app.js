@@ -6,25 +6,10 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 app.use(morgan("tiny"));
 const config = require("./utils/config");
-
-const blogSchema = mongoose.Schema({
-    title: String,
-    author: String,
-    url: String,
-    likes: Number
-});
-
-blogSchema.set("toJSON", {
-    transform: (document, returnedObject) => {
-        returnedObject.id = returnedObject._id.toString();
-        delete returnedObject._id;
-        delete returnedObject.__v;
-    }
-});
-
-const Blog = mongoose.model("Blog", blogSchema);
+const Blog = require("./models/blog");
 
 console.log("Connecting to", config.MONGODB_URL);
+
 mongoose
     .connect(config.MONGODB_URL, { useNewUrlParser: true })
     .then(() => console.log("Conntected to MongoDB"))
