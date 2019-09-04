@@ -27,4 +27,26 @@ const mostBlogs = blogs => {
     return { author: winner, blogs: mostCommonName[winner] };
 };
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs };
+const mostLikes = blogs => {
+    const authorsObject = blogs.map(blog => blog.author);
+    const authorsArray = _.uniq(authorsObject);
+
+    const arrayWithAuthors = [];
+
+    authorsArray.forEach(author => {
+        let numberOfLikes = 0;
+
+        blogs.forEach(blog => {
+            if (blog.author === author) {
+                numberOfLikes += blog.likes;
+            }
+        });
+
+        arrayWithAuthors.push({ author: author, likes: numberOfLikes });
+    });
+
+    const authorWithMostLikes = favoriteBlog(arrayWithAuthors); // get highest like with previous function
+    return authorWithMostLikes;
+};
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes };
