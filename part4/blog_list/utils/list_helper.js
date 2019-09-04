@@ -1,3 +1,5 @@
+const _ = require("lodash");
+
 const dummy = blogs => 1;
 
 const totalLikes = blogs => {
@@ -14,4 +16,15 @@ const favoriteBlog = blogs => {
     return blogs.find(blog => blog.likes === highest);
 };
 
-module.exports = { dummy, totalLikes, favoriteBlog };
+const mostBlogs = blogs => {
+    let nameArray = _.map(blogs, "author"); // get an array with authors
+    let mostCommonName = _.countBy(nameArray);
+
+    let winner = Object.keys(mostCommonName).reduce((a, b) =>
+        mostCommonName[a] > mostCommonName[b] ? a : b
+    );
+
+    return { author: winner, blogs: mostCommonName[winner] };
+};
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs };

@@ -96,3 +96,10 @@ describe("most likes", () => {
         expect(result).toEqual(blogs[2]);
     });
 });
+
+describe("most named author", () => {
+    test("find which author has been named most", () => {
+        const result = listHelper.mostBlogs(blogs);
+        expect(result).toEqual({ author: "Robert C. Martin", blogs: 3 });
+    });
+});
