@@ -43,7 +43,7 @@ test('find a specific note', async () => {
 
 	const contents = response.body.map((r) => r.title);
 
-	expect(contents).toContainEqual('Journey');
+	expect(contents).toContainEqual('Trip');
 });
 
 test('a valid blog can be added', async () => {
@@ -62,6 +62,11 @@ test('a valid blog can be added', async () => {
 
 	expect(response.body.length).toBe(initialBlogs.length + 1);
 	expect(contents).toContainEqual('Fare');
+});
+
+test('see that id is used instead of _id', async () => {
+	const response = await api.get('/api/blogs');
+	expect(response.body[0].id).toBeDefined();
 });
 
 afterAll(() => {
