@@ -3,7 +3,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const morgan = require('morgan');
 const config = require('./utils/config');
 const blogsRouter = require('./controllers/blogs');
 const middleware = require('./utils/middleware');
@@ -17,7 +16,6 @@ mongoose
 	.catch((error) => logger.error('Error connecting to MongoDB:', error.message));
 
 app.use(middleware.requestLogger);
-app.use(morgan('tiny'));
 app.use(cors());
 app.use(bodyParser.json());
 

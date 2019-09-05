@@ -11,7 +11,13 @@ blogsRouter.get('/blogs', async (request, response) => {
 });
 
 blogsRouter.post('/blogs', async (request, response) => {
-	const blog = new Blog(request.body);
+	// Default likes to 0 if they arent included
+	const blogBody = request.body;
+	if (blogBody.likes === undefined) {
+		blogBody.likes = 0;
+	}
+
+	const blog = new Blog(blogBody);
 
 	try {
 		const result = await blog.save();

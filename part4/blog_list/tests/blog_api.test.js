@@ -69,6 +69,22 @@ test('see that id is used instead of _id', async () => {
 	expect(response.body[0].id).toBeDefined();
 });
 
+test('if the like property is missing, default to 0', async () => {
+	const newBlog = {
+		title  : 'Travel',
+		author : 'Kanobi',
+		url    : 'www.bing.se'
+	};
+
+	const addedBlog = await api
+		.post('/api/blogs')
+		.send(newBlog)
+		.expect(201)
+		.expect('Content-Type', /application\/json/);
+
+	expect(addedBlog.body.likes).toBe(0);
+});
+
 afterAll(() => {
 	mongoose.connection.close();
 });
