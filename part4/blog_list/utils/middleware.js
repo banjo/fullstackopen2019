@@ -15,7 +15,11 @@ const unknownEndpoint = (request, response) => {
 const errorHandler = (error, request, response, next) => {
 	logger.error(error.message);
 
+	if (error.name === 'ValidationError') {
+		response.status(400).send({ error: 'Validation error, add URL and Title' });
+	}
+
 	next(error);
 };
 
-module.exports = { requestLogger, unknownEndpoint };
+module.exports = { requestLogger, unknownEndpoint, errorHandler };

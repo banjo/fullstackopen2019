@@ -85,6 +85,15 @@ test('if the like property is missing, default to 0', async () => {
 	expect(addedBlog.body.likes).toBe(0);
 });
 
+test('get status code 400 if url or title is missing', async () => {
+	const newBlog = {
+		title  : 'Going',
+		author : 'R2D2'
+	};
+
+	await api.post('/api/blogs').send(newBlog).expect(400);
+});
+
 afterAll(() => {
 	mongoose.connection.close();
 });
