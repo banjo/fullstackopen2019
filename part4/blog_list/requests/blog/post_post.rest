@@ -1,0 +1,10 @@
+post http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Hello",
+    "author": "Greeter",
+    "url": "www.se",
+    "likes": 3,
+    "userId": "5d72283d1a05e01facd2416f"
+}

@@ -1,9 +1,0 @@
-post http://localhost:3001/api/blogs
-Content-Type: application/json
-
-{
-    "title": "Testet3",
-    "author": "Tjonis",
-    "url": "www.se",
-    "likes": 5
-}

@@ -14,8 +14,11 @@ const unknownEndpoint = (request, response) => {
 
 const errorHandler = (error, request, response, next) => {
 	logger.error(error.message);
+	console.log(error.errors.username);
 
-	if (error.name === 'ValidationError') {
+	if (error.name === 'ValidationError' && error.errors.username) {
+		response.status(400).send({ error: 'Validation error, username must be unique' });
+	} else if (error.name === 'ValidationError') {
 		response.status(400).send({ error: 'Validation error, add URL and Title' });
 	}
 
