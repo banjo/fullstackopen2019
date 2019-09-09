@@ -17,9 +17,11 @@ const errorHandler = (error, request, response, next) => {
 	console.log(error.errors.username);
 
 	if (error.name === 'ValidationError' && error.errors.username) {
-		response.status(400).send({ error: 'Validation error, username must be unique' });
+		return response.status(400).send({ error: 'Validation error, username must be unique' });
 	} else if (error.name === 'ValidationError') {
-		response.status(400).send({ error: 'Validation error, add URL and Title' });
+		return response.status(400).send({ error: 'Validation error, add URL and Title' });
+	} else if (error.name === 'JsonWebTokenError') {
+		return response.status(401).json({ error: 'invalid token' });
 	}
 
 	next(error);
