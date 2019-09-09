@@ -1,0 +1,11 @@
+post http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdyZWV0ZXIiLCJpZCI6IjVkNzIyODNkMWEwNWUwMWZhY2QyNDE2ZiIsImlhdCI6MTU2ODAzMTQ5N30.4qOlJRc4woXd6KV8TKpKntbMZoMW5yDfHQchZkRJrDs
+
+{
+    "title": "Wopido3",
+    "author": "Greeter",
+    "url": "www.se",
+    "likes": 3,
+    "userId": "5d72283d1a05e01facd2416f"
+}
