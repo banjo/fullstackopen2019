@@ -17,6 +17,7 @@ mongoose
 	.then(() => logger.info('Conntected to MongoDB'))
 	.catch((error) => logger.error('Error connecting to MongoDB:', error.message));
 
+app.use(middleware.tokenExtractor);
 app.use(middleware.requestLogger);
 app.use(cors());
 app.use(bodyParser.json());
