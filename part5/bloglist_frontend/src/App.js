@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import blogService from './services/blogs';
-// import axios from 'axios';
+import loginService from './services/loginService';
 import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
-import loginService from './services/loginService';
+import BlogForm from './components/BlogForm';
 
 function App() {
 	const [ blogs, setBlogs ] = useState([ {} ]);
@@ -44,12 +44,12 @@ function App() {
 			//TODO: add response
 			console.log('Wrong credentials');
 		}
-    };
+	};
 
-    const logoutHandler = async () => {
-        window.localStorage.clear()
-        setUser(null)
-    }
+	const logoutHandler = async () => {
+		window.localStorage.clear();
+		setUser(null);
+	};
 
 	// turn blogs to HTML
 	const blogItems = blogs.map((blog, index) => <Blog key={index} blog={blog} />);
@@ -73,6 +73,8 @@ function App() {
 					{user.name} logged in
 					<input type="button" value="logout" onClick={logoutHandler} />
 				</div>
+				<br />
+				<BlogForm />
 				<br />
 
 				<div>{blogItems}</div>
