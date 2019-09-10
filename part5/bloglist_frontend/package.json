@@ -10,7 +10,8 @@
 	},
 	"scripts": {
 		"start": "react-scripts start",
-		"server": "cd ../../part4/blog_list && npm run watch"
+		"server": "cd ../../part4/blog_list && npm run watch",
+		"dev": "concurrently -k \"npm run start\" \"npm run server\" "
 	},
 	"eslintConfig": {
 		"extends": "react-app"
@@ -27,5 +28,8 @@
 			"last 1 safari version"
 		]
 	},
-	"proxy": "http://localhost:3003"
+	"proxy": "http://localhost:3003",
+	"devDependencies": {
+		"concurrently": "^4.1.2"
+	}
 }
