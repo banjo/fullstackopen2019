@@ -45,8 +45,14 @@ function App() {
 			setUser(user);
 			setLogin({ username: '', password: '' });
 		} catch (error) {
-			//TODO: add response
-			console.log('Wrong credentials');
+			setNotification({
+				status  : true,
+				success : false,
+				message : `Wrong username or password`
+			});
+			setTimeout(() => {
+				setNotification({ status: null });
+			}, 5000);
 		}
 	};
 
@@ -63,6 +69,7 @@ function App() {
 		return (
 			<div>
 				<h2>Log in</h2>
+				<Notification notification={notification} />
 				<LoginForm loginHandler={loginHandler} setLogin={setLogin} login={login} />
 			</div>
 		);

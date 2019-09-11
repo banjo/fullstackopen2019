@@ -2,32 +2,28 @@ import React from 'react';
 
 const Notification = ({ notification }) => {
 	if (notification.status === null) {
-		return <div />;
+		return null;
 	}
 
-	let messageStyle = {
-		margin       : '10px 0',
-		padding      : '10px',
-		borderRadius : '3px 3px 3px 3px'
+	const successStyle = {
+		margin          : '10px 0',
+		padding         : '10px',
+		borderRadius    : '3px 3px 3px 3px',
+		color           : '#270',
+		backgroundColor : '#DFF2BF',
+		width           : '500px'
 	};
 
-	notification.success
-		? (messageStyle = {
-				...messageStyle,
-				color           : '#270',
-				backgroundColor : '#DFF2BF'
-			})
-		: (messageStyle = {
-				...messageStyle,
-				color           : '#D8000C',
-				backgroundColor : '#FFBABA'
-			});
-
-	const message = ({ notification }) => {
-		return <div style={messageStyle}>{notification.message}</div>;
+	const errorStyle = {
+		margin          : '10px 0',
+		padding         : '10px',
+		borderRadius    : '3px 3px 3px 3px',
+		color           : '#D8000C',
+		backgroundColor : '#FFBABA',
+		width           : '500px'
 	};
 
-	return <div>{message}</div>;
-};s
+	return <div style={notification.success ? successStyle : errorStyle}>{notification.message}</div>;
+};
 
 export default Notification;
