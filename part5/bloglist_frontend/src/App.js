@@ -4,11 +4,13 @@ import loginService from './services/loginService';
 import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
+import Notification from './components/Notification';
 
 function App() {
 	const [ blogs, setBlogs ] = useState([ {} ]);
 	const [ user, setUser ] = useState(null);
 	const [ login, setLogin ] = useState({ username: '', password: '' });
+	const [ notification, setNotification ] = useState({ status: null, success: true, message: '' });
 
 	// get all blogs
 	useEffect(() => {
@@ -71,12 +73,13 @@ function App() {
 		<div className="App">
 			<div>
 				<h2>Blogs</h2>
+				<Notification notification={notification} />
 				<div>
 					{user.name} logged in
 					<input type="button" value="logout" onClick={logoutHandler} />
 				</div>
 				<br />
-				<BlogForm blogs={blogs} setBlogs={setBlogs} />
+				<BlogForm blogs={blogs} setBlogs={setBlogs} setNotification={setNotification} />
 				<br />
 
 				<h3>Blog posts</h3>

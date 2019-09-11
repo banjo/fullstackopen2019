@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs';
 
-const BlogForm = ({ blogs, setBlogs }) => {
+const BlogForm = ({ blogs, setBlogs, setNotification }) => {
 	const [ blogPost, setBlogPost ] = useState({ title: '', author: '', url: '' });
 
 	const handleSubmit = async (event) => {
@@ -10,9 +10,20 @@ const BlogForm = ({ blogs, setBlogs }) => {
 
 		try {
 			await blogService.addBlog(blogPost);
+
 			setBlogs([ ...blogs, blogPost ]);
 			setBlogPost({ title: '', author: '', url: '' });
+
 			formEvent.reset();
+
+			setNotification({
+				status: true,
+				success: true,
+				message: `A new blog added: ${blogPost.title} by ${blogPost.author}`
+			});
+			setTimeout(() => {
+				setNotification({ status: null, success: true, message: '' });
+			}, 5000);
 		} catch (error) {
 			console.log(error);
 		}
