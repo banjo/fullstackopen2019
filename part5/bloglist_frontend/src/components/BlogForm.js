@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
+import blogService from '../services/blogs';
 
-const BlogForm = ({}) => {
-	let blogPost = { title: '', author: '', url: '' };
+const BlogForm = ({ blogs, setBlogs }) => {
+	const [ blogPost, setBlogPost ] = useState({ title: '', author: '', url: '' });
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault();
+		const formEvent = event.target;
+
+		try {
+			await blogService.addBlog(blogPost);
+			setBlogs([ ...blogs, blogPost ]);
+			setBlogPost({ title: '', author: '', url: '' });
+			formEvent.reset();
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const handleChange = (event) => {
 		if (event.target.name === 'title') {
-			blogPost = { ...blogPost, title: event.target.value };
+			setBlogPost({ ...blogPost, title: event.target.value });
 		} else if (event.target.name === 'author') {
-			blogPost = { ...blogPost, author: event.target.value };
+			setBlogPost({ ...blogPost, author: event.target.value });
 		} else if (event.target.name === 'url') {
-			blogPost = { ...blogPost, url: event.target.value };
+			setBlogPost({ ...blogPost, url: event.target.value });
 		}
 	};
 

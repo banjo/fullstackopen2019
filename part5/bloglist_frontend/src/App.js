@@ -24,6 +24,7 @@ function App() {
 		const loggedUserJSON = window.localStorage.getItem('loggedUser');
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON);
+			blogService.setToken(user.token);
 			setUser(user);
 		}
 	}, []);
@@ -38,6 +39,7 @@ function App() {
 			// save user locally
 			window.localStorage.setItem('loggedUser', JSON.stringify(user));
 
+			blogService.setToken(user.token);
 			setUser(user);
 			setLogin({ username: '', password: '' });
 		} catch (error) {
@@ -68,15 +70,16 @@ function App() {
 	return (
 		<div className="App">
 			<div>
-				<h3>Blogs</h3>
+				<h2>Blogs</h2>
 				<div>
 					{user.name} logged in
 					<input type="button" value="logout" onClick={logoutHandler} />
 				</div>
 				<br />
-				<BlogForm />
+				<BlogForm blogs={blogs} setBlogs={setBlogs} />
 				<br />
 
+				<h3>Blog posts</h3>
 				<div>{blogItems}</div>
 			</div>
 		</div>
