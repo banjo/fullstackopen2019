@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-const Blog = ({ blog, likeHandler, removeHandler }) => {
+const Blog = ({ blog, likeHandler, removeHandler, user }) => {
 	const [ expand, setExpand ] = useState(false);
 
 	const blogStyle = {
@@ -32,6 +32,19 @@ const Blog = ({ blog, likeHandler, removeHandler }) => {
 		event.stopPropagation();
 	};
 
+	const RemoveButton = () => {
+		// return button if correct user
+		if (user.username === blog.user.username) {
+			return (
+				<div>
+					<button onClick={removeClicked}>Remove</button>
+				</div>
+			);
+		}
+
+		return null;
+	};
+
 	// if expanded
 	if (expand) {
 		return (
@@ -45,9 +58,7 @@ const Blog = ({ blog, likeHandler, removeHandler }) => {
 						{blog.likes} likes <button onClick={likeClicked}>Like</button>
 					</div>
 					<div>Added by {blog.user.name}</div>
-					<div>
-						<button onClick={removeClicked}>Remove</button>
-					</div>
+					<RemoveButton />
 				</div>
 			</div>
 		);

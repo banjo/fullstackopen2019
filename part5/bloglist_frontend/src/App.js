@@ -114,7 +114,7 @@ function App() {
 
 	// turn blogs to HTML
 	const blogItems = blogs.map((blog, index) => (
-		<Blog key={index} blog={blog} likeHandler={likeHandler} removeHandler={removeHandler} />
+		<Blog key={index} blog={blog} likeHandler={likeHandler} removeHandler={removeHandler} user={user} />
 	));
 
 	// return login if not logged in
