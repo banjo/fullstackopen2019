@@ -33,6 +33,18 @@ function App() {
 		}
 	}, []);
 
+    // add notifications
+	const addNotification = (success, message) => {
+		setNotification({
+			status  : true,
+			success : success,
+			message : message
+		});
+		setTimeout(() => {
+			setNotification({ status: null });
+		}, 5000);
+	};
+
 	// handlers
 	const loginHandler = async (event) => {
 		event.preventDefault();
@@ -47,14 +59,7 @@ function App() {
 			setUser(user);
 			setLogin({ username: '', password: '' });
 		} catch (error) {
-			setNotification({
-				status  : true,
-				success : false,
-				message : `Wrong username or password`
-			});
-			setTimeout(() => {
-				setNotification({ status: null });
-			}, 5000);
+			addNotification(false, 'Wrong username or password');
 		}
 	};
 
@@ -75,21 +80,25 @@ function App() {
 
 			formEvent.reset();
 
-			setNotification({
-				status  : true,
-				success : true,
-				message : `A new blog added: ${blogPost.title} by ${blogPost.author}`
-			});
-			setTimeout(() => {
-				setNotification({ status: null, success: true, message: '' });
-			}, 5000);
+			addNotification(true, `A new blog added: ${blogPost.title} by ${blogPost.author}`);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const likeHandler = async (blog) => {
+		try {
+			const newPost = await blogService.addLike(blog);
+			const newBlogs = blogs.map((blog) => (blog.id === newPost.id ? newPost : blog));
+			setBlogs(newBlogs);
+			addNotification(true, 'Liked post');
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
 	// turn blogs to HTML
-	const blogItems = blogs.map((blog, index) => <Blog key={index} blog={blog} />);
+	const blogItems = blogs.map((blog, index) => <Blog key={index} blog={blog} likeHandler={likeHandler} />);
 
 	// return login if not logged in
 	if (user === null) {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-const Blog = ({ blog }) => {
+const Blog = ({ blog, likeHandler }) => {
 	const [ expand, setExpand ] = useState(false);
 
 	const blogStyle = {
@@ -11,6 +11,16 @@ const Blog = ({ blog }) => {
 		marginBottom : 5
 	};
 
+	const likeClicked = (event) => {
+		event.preventDefault();
+
+		// stop div from closing
+		event.stopPropagation();
+
+		// add like to database
+		likeHandler({ ...blog, likes: blog.likes + 1 });
+	};
+
 	if (expand) {
 		return (
 			<div style={blogStyle}>
@@ -18,7 +28,7 @@ const Blog = ({ blog }) => {
 					<div>{blog.title}</div>
 					<div>{blog.url}</div>
 					<div>
-						{blog.likes} likes <button>Like</button>
+						{blog.likes} likes <button onClick={likeClicked}>Like</button>
 					</div>
 					<div>Added by {blog.author}</div>
 				</div>
