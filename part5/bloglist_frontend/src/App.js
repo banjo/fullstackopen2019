@@ -33,7 +33,7 @@ function App() {
 		}
 	}, []);
 
-    // add notifications
+	// add notifications
 	const addNotification = (success, message) => {
 		setNotification({
 			status  : true,
@@ -96,6 +96,9 @@ function App() {
 			console.log(error);
 		}
 	};
+
+	// sort blogs for most likes
+	blogs.sort((a, b) => b.likes - a.likes);
 
 	// turn blogs to HTML
 	const blogItems = blogs.map((blog, index) => <Blog key={index} blog={blog} likeHandler={likeHandler} />);
