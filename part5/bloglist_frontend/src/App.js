@@ -5,12 +5,14 @@ import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
 import Notification from './components/Notification';
+import Togglable from './components/Togglable';
 
 function App() {
 	const [ blogs, setBlogs ] = useState([ {} ]);
 	const [ user, setUser ] = useState(null);
 	const [ login, setLogin ] = useState({ username: '', password: '' });
 	const [ notification, setNotification ] = useState({ status: null, success: true, message: '' });
+	const [ blogPost, setBlogPost ] = useState({ title: '', author: '', url: '' });
 
 	// get all blogs
 	useEffect(() => {
@@ -61,6 +63,31 @@ function App() {
 		setUser(null);
 	};
 
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		const formEvent = event.target;
+
+		try {
+			await blogService.addBlog(blogPost);
+
+			setBlogs([ ...blogs, blogPost ]);
+			setBlogPost({ title: '', author: '', url: '' });
+
+			formEvent.reset();
+
+			setNotification({
+				status  : true,
+				success : true,
+				message : `A new blog added: ${blogPost.title} by ${blogPost.author}`
+			});
+			setTimeout(() => {
+				setNotification({ status: null, success: true, message: '' });
+			}, 5000);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	// turn blogs to HTML
 	const blogItems = blogs.map((blog, index) => <Blog key={index} blog={blog} />);
 
@@ -86,7 +113,9 @@ function App() {
 					<input type="button" value="logout" onClick={logoutHandler} />
 				</div>
 				<br />
-				<BlogForm blogs={blogs} setBlogs={setBlogs} setNotification={setNotification} />
+				<Togglable buttonLabel="Create new post">
+					<BlogForm blogPost={blogPost} setBlogPost={setBlogPost} handleSubmit={handleSubmit} />
+				</Togglable>
 				<br />
 
 				<h3>Blog posts</h3>

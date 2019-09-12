@@ -1,34 +1,6 @@
-import React, { useState } from 'react';
-import blogService from '../services/blogs';
+import React from 'react';
 
-const BlogForm = ({ blogs, setBlogs, setNotification }) => {
-	const [ blogPost, setBlogPost ] = useState({ title: '', author: '', url: '' });
-
-	const handleSubmit = async (event) => {
-		event.preventDefault();
-		const formEvent = event.target;
-
-		try {
-			await blogService.addBlog(blogPost);
-
-			setBlogs([ ...blogs, blogPost ]);
-			setBlogPost({ title: '', author: '', url: '' });
-
-			formEvent.reset();
-
-			setNotification({
-				status: true,
-				success: true,
-				message: `A new blog added: ${blogPost.title} by ${blogPost.author}`
-			});
-			setTimeout(() => {
-				setNotification({ status: null, success: true, message: '' });
-			}, 5000);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
+const BlogForm = ({ blogPost, setBlogPost, handleSubmit }) => {
 	const handleChange = (event) => {
 		if (event.target.name === 'title') {
 			setBlogPost({ ...blogPost, title: event.target.value });
