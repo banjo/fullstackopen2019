@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-const Blog = ({ blog, likeHandler }) => {
+const Blog = ({ blog, likeHandler, removeHandler }) => {
 	const [ expand, setExpand ] = useState(false);
 
 	const blogStyle = {
@@ -21,6 +21,18 @@ const Blog = ({ blog, likeHandler }) => {
 		likeHandler({ ...blog, likes: blog.likes + 1 });
 	};
 
+	const removeClicked = (event) => {
+		event.preventDefault();
+
+		if (window.confirm(`Remove post ${blog.title} by ${blog.author}?`)) {
+			removeHandler(blog);
+			setExpand(false);
+		}
+
+		event.stopPropagation();
+	};
+
+	// if expanded
 	if (expand) {
 		return (
 			<div style={blogStyle}>
@@ -33,11 +45,15 @@ const Blog = ({ blog, likeHandler }) => {
 						{blog.likes} likes <button onClick={likeClicked}>Like</button>
 					</div>
 					<div>Added by {blog.user.name}</div>
+					<div>
+						<button onClick={removeClicked}>Remove</button>
+					</div>
 				</div>
 			</div>
 		);
 	}
 
+	// if normal state
 	return (
 		<div style={blogStyle}>
 			<div onClick={() => setExpand(true)}>

@@ -74,8 +74,9 @@ function App() {
 
 		try {
 			await blogService.addBlog(blogPost);
+			const newBlogs = await blogService.getAll();
 
-			setBlogs([ ...blogs, blogPost ]);
+			setBlogs(newBlogs);
 			setBlogPost({ title: '', author: '', url: '' });
 
 			formEvent.reset();
@@ -97,12 +98,23 @@ function App() {
 		}
 	};
 
+	const removeHandler = async (blog) => {
+		try {
+			const deletedPost = await blogService.removePost(blog);
+			const newBlogs = blogs.filter((blog) => blog.id !== deletedPost.id);
+			setBlogs(newBlogs);
+			addNotification(true, 'Post removed');
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	// sort blogs for most likes
 	blogs.sort((a, b) => b.likes - a.likes);
 
 	// turn blogs to HTML
 	const blogItems = blogs.map((blog, index) => (
-		<Blog key={index} blog={blog} likeHandler={likeHandler}/>
+		<Blog key={index} blog={blog} likeHandler={likeHandler} removeHandler={removeHandler} />
 	));
 
 	// return login if not logged in
