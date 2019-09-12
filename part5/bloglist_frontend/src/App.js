@@ -101,7 +101,9 @@ function App() {
 	blogs.sort((a, b) => b.likes - a.likes);
 
 	// turn blogs to HTML
-	const blogItems = blogs.map((blog, index) => <Blog key={index} blog={blog} likeHandler={likeHandler} />);
+	const blogItems = blogs.map((blog, index) => (
+		<Blog key={index} blog={blog} likeHandler={likeHandler}/>
+	));
 
 	// return login if not logged in
 	if (user === null) {

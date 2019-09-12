@@ -25,12 +25,14 @@ const Blog = ({ blog, likeHandler }) => {
 		return (
 			<div style={blogStyle}>
 				<div onClick={() => setExpand(false)}>
-					<div>{blog.title}</div>
+					<div>
+						{blog.title} by {blog.author}
+					</div>
 					<div>{blog.url}</div>
 					<div>
 						{blog.likes} likes <button onClick={likeClicked}>Like</button>
 					</div>
-					<div>Added by {blog.author}</div>
+					<div>Added by {blog.user.name}</div>
 				</div>
 			</div>
 		);
@@ -39,7 +41,7 @@ const Blog = ({ blog, likeHandler }) => {
 	return (
 		<div style={blogStyle}>
 			<div onClick={() => setExpand(true)}>
-				{blog.title} {blog.author}
+				{blog.title} by {blog.author}
 			</div>
 		</div>
 	);
