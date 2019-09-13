@@ -12,25 +12,19 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"server": "cd ../../part4/blog_list && npm run watch",
-		"dev": "concurrently -k \"npm run start\" \"npm run server\" "
+		"dev": "concurrently -k \"npm run start\" \"npm run server\"",
+		"eslint": "eslint ."
 	},
 	"eslintConfig": {
 		"extends": "react-app"
 	},
 	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
+		"production": [ ">0.2%", "not dead", "not op_mini all" ],
+		"development": [ "last 1 chrome version", "last 1 firefox version", "last 1 safari version" ]
 	},
 	"proxy": "http://localhost:3003",
 	"devDependencies": {
-		"concurrently": "^4.1.2"
+		"concurrently": "^4.1.2",
+		"eslint-plugin-jest": "^22.17.0"
 	}
 }
