@@ -6,11 +6,14 @@ import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
 import Notification from './components/Notification';
 import Togglable from './components/Togglable';
+import { useField } from './hooks/index';
 
 function App() {
     const [ blogs, setBlogs ] = useState([ {} ]);
     const [ user, setUser ] = useState(null);
     const [ login, setLogin ] = useState({ username: '', password: '' });
+    const username = useField('text');
+    const password = useField('password');
     const [ notification, setNotification ] = useState({ status: null, success: true, message: '' });
     const [ blogPost, setBlogPost ] = useState({ title: '', author: '', url: '' });
 
@@ -50,7 +53,7 @@ function App() {
         event.preventDefault();
 
         try {
-            const user = await loginService.login(login.username, login.password);
+            const user = await loginService.login(username.value, password.value);
 
             // save user locally
             window.localStorage.setItem('loggedUser', JSON.stringify(user));
@@ -123,7 +126,7 @@ function App() {
             <div>
                 <h2>Log in</h2>
                 <Notification notification={notification} />
-                <LoginForm loginHandler={loginHandler} setLogin={setLogin} login={login} />
+                <LoginForm loginHandler={loginHandler} username={username} password={password} />
             </div>
         );
     }
