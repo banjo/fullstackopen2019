@@ -11,11 +11,13 @@ import { useField } from './hooks/index';
 function App() {
     const [ blogs, setBlogs ] = useState([ {} ]);
     const [ user, setUser ] = useState(null);
-    const [ login, setLogin ] = useState({ username: '', password: '' });
+    const [ notification, setNotification ] = useState({ status: null, success: true, message: '' });
+    // const [ blogPost, setBlogPost ] = useState({ title: '', author: '', url: '' });
     const username = useField('text');
     const password = useField('password');
-    const [ notification, setNotification ] = useState({ status: null, success: true, message: '' });
-    const [ blogPost, setBlogPost ] = useState({ title: '', author: '', url: '' });
+    const blogTitle = useField('text');
+    const blogAuthor = useField('text');
+    const blogUrl = useField('text');
 
     // get all blogs
     useEffect(() => {
@@ -60,7 +62,8 @@ function App() {
 
             blogService.setToken(user.token);
             setUser(user);
-            setLogin({ username: '', password: '' });
+            username.reset();
+            password.reset();
         } catch (error) {
             addNotification(false, 'Wrong username or password');
         }
@@ -75,12 +78,17 @@ function App() {
         event.preventDefault();
         const formEvent = event.target;
 
+        let blogPost = { title: blogTitle.value, author: blogAuthor.value, url: blogUrl.value };
+
         try {
             await blogService.addBlog(blogPost);
             const newBlogs = await blogService.getAll();
 
             setBlogs(newBlogs);
-            setBlogPost({ title: '', author: '', url: '' });
+
+            blogTitle.reset();
+            blogAuthor.reset();
+            blogUrl.reset();
 
             formEvent.reset();
 
@@ -143,7 +151,12 @@ function App() {
                 </div>
                 <br />
                 <Togglable buttonLabel="Create new post">
-                    <BlogForm blogPost={blogPost} setBlogPost={setBlogPost} handleSubmit={handleSubmit} />
+                    <BlogForm
+                        handleSubmit={handleSubmit}
+                        blogTitle={blogTitle}
+                        blogAuthor={blogAuthor}
+                        blogUrl={blogUrl}
+                    />
                 </Togglable>
                 <br />
 

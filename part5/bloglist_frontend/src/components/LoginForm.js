@@ -4,10 +4,10 @@ const LoginForm = ({ loginHandler, username, password }) => {
     return (
         <form onSubmit={loginHandler}>
             <div>
-                Username <input {...username} />
+                Username <input {...username.bind} />
             </div>
             <div>
-                Password <input {...password} />
+                Password <input {...password.bind} />
             </div>
             <div>
                 <input type="submit" value="Login" />
