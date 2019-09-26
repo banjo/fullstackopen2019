@@ -39,7 +39,10 @@ const reducer = (state = initialState, action) => {
 };
 
 export const createAnecdote = (anecdote) => {
-    return asObject(anecdote);
+    return {
+        type : 'ADD',
+        data : { anecdote }
+    };
 };
 
 export const addVote = (id) => {
