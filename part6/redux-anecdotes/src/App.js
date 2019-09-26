@@ -1,24 +1,19 @@
 import React from 'react';
+import { createAnecdote, addVote } from './reducers/anecdoteReducer';
 
 const App = (props) => {
     const initialAnecdotes = props.store.getState();
-    const anecdotes = initialAnecdotes.sort((a, b) => b["votes"] - a["votes"]);
+    const anecdotes = initialAnecdotes.sort((a, b) => b['votes'] - a['votes']);
 
     const vote = (id) => {
         console.log('vote', id);
-        props.store.dispatch({
-            type : 'INCREMENT',
-            data : { id }
-        });
+        props.store.dispatch(addVote(id));
     };
 
     const addAnecdote = (event) => {
         event.preventDefault();
         const anecdote = event.target.anecdote.value;
-        props.store.dispatch({
-            type : 'ADD',
-            data : { anecdote }
-        });
+        props.store.dispatch(createAnecdote(anecdote));
         console.log(anecdote);
     };
 

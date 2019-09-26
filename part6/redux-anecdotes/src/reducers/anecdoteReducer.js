@@ -38,4 +38,15 @@ const reducer = (state = initialState, action) => {
     }
 };
 
+export const createAnecdote = (anecdote) => {
+    return asObject(anecdote);
+};
+
+export const addVote = (id) => {
+    return {
+        type : 'INCREMENT',
+        data : { id }
+    };
+};
+
 export default reducer;
