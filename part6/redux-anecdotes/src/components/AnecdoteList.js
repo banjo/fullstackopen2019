@@ -1,8 +1,8 @@
 import React from 'react';
 import { addVote } from '../reducers/anecdoteReducer';
 
-const AnecdoteForm = (props) => {
-    const initialAnecdotes = props.store.getState();
+const anecdoteList = (props) => {
+    const initialAnecdotes = props.store.getState().anecdote;
     const anecdotes = initialAnecdotes.sort((a, b) => b['votes'] - a['votes']);
 
     const vote = (id) => {
@@ -25,4 +25,4 @@ const AnecdoteForm = (props) => {
     );
 };
 
-export default AnecdoteForm;
+export default anecdoteList;
