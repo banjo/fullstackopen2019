@@ -1,15 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { addVote } from '../reducers/anecdoteReducer';
-import { addTimedNotification } from '../reducers/notificationReducer';
+import { notificationChange, notificationReset } from '../reducers/notificationReducer';
 
-const anecdoteList = (props) => {
-    const initialAnecdotes = props.store.getState().anecdote;
+const AnecdoteList = (props) => {
+    const initialAnecdotes = props.anecdotes;
     const anecdotes = initialAnecdotes.sort((a, b) => b['votes'] - a['votes']);
 
     const vote = (id) => {
-        props.store.dispatch(addVote(id));
-        const currentAnecdote = props.store.getState().anecdote.find((a) => a.id === id).content;
-        addTimedNotification(`You voted "${currentAnecdote}"`, props.store);
+        props.addVote(id);
+        const currentAnecdote = props.anecdotes.find((a) => a.id === id).content;
+
+        // send notification
+        props.notificationChange(`You voted "${currentAnecdote}"`);
+        setTimeout(() => {
+            props.notificationReset();
+        }, 5000);
     };
 
     return (
@@ -27,4 +33,18 @@ const anecdoteList = (props) => {
     );
 };
 
-export default anecdoteList;
+const mapStateToProps = (state) => {
+    return {
+        anecdotes    : state.anecdote,
+        notification : state.notification
+    };
+};
+
+const mapDispatchToProps = {
+    addVote,
+    notificationChange,
+    notificationReset
+};
+
+const ConnectedAnecdoteList = connect(mapStateToProps, mapDispatchToProps)(AnecdoteList);
+export default ConnectedAnecdoteList;

@@ -22,11 +22,4 @@ export const notificationReset = () => {
     return { type: 'RESET_NOTIFICATION' };
 };
 
-export const addTimedNotification = (message, store) => {
-    store.dispatch(notificationChange(message));
-    setTimeout(() => {
-        store.dispatch(notificationReset());
-    }, 5000);
-};
-
 export default reducer;
