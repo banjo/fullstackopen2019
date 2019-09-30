@@ -20,8 +20,8 @@ const AnecdoteList = (props) => {
 
     return (
         <div>
-            {anecdotes.map((anecdote) => (
-                <div key={anecdote.id}>
+            {anecdotes.map((anecdote, index) => (
+                <div key={index}>
                     <div>{anecdote.content}</div>
                     <div>
                         has {anecdote.votes}
