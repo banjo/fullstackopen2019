@@ -22,4 +22,21 @@ export const notificationReset = () => {
     return { type: 'RESET_NOTIFICATION' };
 };
 
+export const setNotification = (notification, timeInSeconds) => {
+    const timeInMilliseconds = timeInSeconds * 1000;
+
+    return (dispatch) => {
+        dispatch({
+            type         : 'SET_NOTIFICATION',
+            notification
+        });
+
+        setTimeout(() => {
+            dispatch({
+                type : 'RESET_NOTIFICATION'
+            });
+        }, timeInMilliseconds);
+    };
+};
+
 export default reducer;
