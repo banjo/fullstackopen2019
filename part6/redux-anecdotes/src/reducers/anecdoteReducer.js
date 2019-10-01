@@ -52,9 +52,15 @@ export const createAnecdote = (anecdote) => {
 };
 
 export const addVote = (id) => {
-    return {
-        type : 'INCREMENT',
-        data : { id }
+    return async (dispatch) => {
+        const updatedAnedote = await anecdoteService.addVote(id);
+        console.log('TCL: ----------------------------------------------');
+        console.log('TCL: addVote -> updatedAnedote', updatedAnedote);
+        console.log('TCL: ----------------------------------------------');
+        dispatch({
+            type : 'INCREMENT',
+            data : { id }
+        });
     };
 };
 
