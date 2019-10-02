@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import About from './components/About';
 import AnecdoteList from './components/AnecdoteList';
 
+import Notification from './components/Notification';
 import Anecdote from './components/Anecdote';
 
 const App = () => {
@@ -65,6 +66,9 @@ const App = () => {
                         about
                     </Link>
                 </div>
+                <div>
+                    <Notification notification={notification} />
+                </div>
                 <Route exact path="/" render={() => <AnecdoteList anecdotes={anecdotes} />} />
                 <Route exact path="/anecdotes" render={() => <AnecdoteList anecdotes={anecdotes} />} />
                 <Route
@@ -72,9 +76,10 @@ const App = () => {
                     path="/anecdotes/:id"
                     render={({ match }) => <Anecdote anecdote={anecdoteById(match.params.id)} />}
                 />
-                <Route path="/create" render={() => <CreateNew addNew={addNew} />} />
+                <Route path="/create" render={() => <CreateNew addNew={addNew} setNotification={setNotification} />} />
                 <Route path="/about" render={() => <About />} />
             </Router>
+
             <Footer />
         </div>
     );

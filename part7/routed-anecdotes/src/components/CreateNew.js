@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
 
 const CreateNew = (props) => {
     const [ content, setContent ] = useState('');
@@ -13,6 +14,11 @@ const CreateNew = (props) => {
             info,
             votes   : 0
         });
+        props.history.push('/');
+        props.setNotification(`A new anecdote created: "${content}"`);
+        setTimeout(() => {
+            props.setNotification('');
+        }, 10000);
     };
 
     return (
@@ -37,4 +43,5 @@ const CreateNew = (props) => {
     );
 };
 
-export default CreateNew;
+const Create = withRouter(CreateNew);
+export default Create;
