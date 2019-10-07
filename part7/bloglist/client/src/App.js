@@ -9,7 +9,7 @@ import Togglable from './components/Togglable';
 import { useField } from './hooks/index';
 import { connect } from 'react-redux';
 
-import { initBlogs, createBlog, deleteBlog } from './reducers/blogsReducer';
+import { initBlogs, createBlog, deleteBlog, likeBlog } from './reducers/blogsReducer';
 
 function App(props) {
     const [ blogs, setBlogs ] = useState([ {} ]);
@@ -89,7 +89,6 @@ function App(props) {
             blogTitle.reset();
             blogAuthor.reset();
             blogUrl.reset();
-
             formEvent.reset();
 
             addNotification(true, `A new blog added: ${blogPost.title} by ${blogPost.author}`);
@@ -100,9 +99,7 @@ function App(props) {
 
     const likeHandler = async (blog) => {
         try {
-            const newPost = await blogService.addLike(blog);
-            const newBlogs = blogs.map((blog) => (blog.id === newPost.id ? newPost : blog));
-            setBlogs(newBlogs);
+            props.likeBlog(blog);
             addNotification(true, 'Liked post');
         } catch (error) {
             console.log(error);
@@ -112,7 +109,6 @@ function App(props) {
     const removeHandler = async (blog) => {
         try {
             props.deleteBlog(blog);
-
             addNotification(true, 'Post removed');
         } catch (error) {
             console.log(error);
@@ -176,7 +172,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         initBlogs  : () => dispatch(initBlogs()),
         createBlog : (blog) => dispatch(createBlog(blog)),
-        deleteBlog : (blog) => dispatch(deleteBlog(blog))
+        deleteBlog : (blog) => dispatch(deleteBlog(blog)),
+        likeBlog   : (blog) => dispatch(likeBlog(blog))
     };
 };
 
