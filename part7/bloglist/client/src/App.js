@@ -7,8 +7,11 @@ import BlogForm from './components/BlogForm';
 import Notification from './components/Notification';
 import Togglable from './components/Togglable';
 import { useField } from './hooks/index';
+import { connect } from 'react-redux';
 
-function App() {
+import { initBlogs, createBlog, deleteBlog } from './reducers/blogsReducer';
+
+function App(props) {
     const [ blogs, setBlogs ] = useState([ {} ]);
     const [ user, setUser ] = useState(null);
     const [ notification, setNotification ] = useState({ status: null, success: true, message: '' });
@@ -19,14 +22,14 @@ function App() {
     const blogAuthor = useField('text');
     const blogUrl = useField('text');
 
-    // get all blogs
-    useEffect(() => {
-        const getBlogs = async () => {
-            const allBlogs = await blogService.getAll();
-            setBlogs(allBlogs);
-        };
-        getBlogs();
-    }, []);
+    // init blogs
+    const initBlogs = props.initBlogs;
+    useEffect(
+        () => {
+            initBlogs();
+        },
+        [ initBlogs ]
+    );
 
     // get user if stored locally
     useEffect(() => {
@@ -81,10 +84,7 @@ function App() {
         let blogPost = { title: blogTitle.value, author: blogAuthor.value, url: blogUrl.value };
 
         try {
-            await blogService.addBlog(blogPost);
-            const newBlogs = await blogService.getAll();
-
-            setBlogs(newBlogs);
+            props.createBlog(blogPost);
 
             blogTitle.reset();
             blogAuthor.reset();
@@ -111,9 +111,8 @@ function App() {
 
     const removeHandler = async (blog) => {
         try {
-            const deletedPost = await blogService.removePost(blog);
-            const newBlogs = blogs.filter((blog) => blog.id !== deletedPost.id);
-            setBlogs(newBlogs);
+            props.deleteBlog(blog);
+
             addNotification(true, 'Post removed');
         } catch (error) {
             console.log(error);
@@ -124,7 +123,7 @@ function App() {
     blogs.sort((a, b) => b.likes - a.likes);
 
     // turn blogs to HTML
-    const blogItems = blogs.map((blog, index) => (
+    const blogItems = props.blogs.map((blog, index) => (
         <Blog key={index} blog={blog} likeHandler={likeHandler} removeHandler={removeHandler} user={user} />
     ));
 
@@ -167,4 +166,18 @@ function App() {
     );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        blogs : state.blogs
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        initBlogs  : () => dispatch(initBlogs()),
+        createBlog : (blog) => dispatch(createBlog(blog)),
+        deleteBlog : (blog) => dispatch(deleteBlog(blog))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -11,9 +11,7 @@
         "dev": "concurrently -k \"npm run watch\" \"npm run react\"",
         "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
     },
-    "keywords": [
-        "blog"
-    ],
+    "keywords": [ "blog" ],
     "author": "Anton Ödman",
     "license": "ISC",
     "dependencies": {
