@@ -122,7 +122,7 @@ function App(props) {
         return (
             <div>
                 <h2>Log in</h2>
-                <Notification notification={props.notification} />
+                <Notification />
                 <LoginForm loginHandler={loginHandler} username={username} password={password} />
             </div>
         );
@@ -133,7 +133,7 @@ function App(props) {
         <div className="App">
             <div>
                 <h2>Blogs</h2>
-                <Notification notification={props.notification} />
+                <Notification />
                 <div>
                     {props.name} logged in
                     <input type="button" value="logout" onClick={logoutHandler} />
