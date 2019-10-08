@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import blogService from './services/blogs';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+
 import loginService from './services/loginService';
 import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
 import Notification from './components/Notification';
 import Togglable from './components/Togglable';
+
 import { useField } from './hooks/index';
 import { connect } from 'react-redux';
 
@@ -96,7 +98,6 @@ function App(props) {
     const removeHandler = async (blog) => {
         try {
             props.deleteBlog(blog);
-            // addNotification(true, 'Post removed');
             props.setNotification('Post removed', true);
         } catch (error) {
             console.log(error);
