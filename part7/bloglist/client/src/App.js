@@ -11,9 +11,9 @@ import { connect } from 'react-redux';
 
 import { initBlogs, createBlog, deleteBlog, likeBlog } from './reducers/blogsReducer';
 import { setUser, setToken, logout } from './reducers/loginReducer';
+import { setNotification } from './reducers/notificationReducer';
 
 function App(props) {
-    const [ notification, setNotification ] = useState({ status: null, success: true, message: '' });
     const username = useField('text');
     const password = useField('password');
     const blogTitle = useField('text');
@@ -39,18 +39,6 @@ function App(props) {
         }
     }, []);
 
-    // add notifications
-    const addNotification = (success, message) => {
-        setNotification({
-            status  : true,
-            success : success,
-            message : message
-        });
-        setTimeout(() => {
-            setNotification({ status: null });
-        }, 5000);
-    };
-
     // handlers
     const loginHandler = async (event) => {
         event.preventDefault();
@@ -67,7 +55,7 @@ function App(props) {
             username.reset();
             password.reset();
         } catch (error) {
-            addNotification(false, 'Wrong username or password');
+            props.setNotification('Wrong username or password', false);
         }
     };
 
@@ -90,7 +78,7 @@ function App(props) {
             blogUrl.reset();
             formEvent.reset();
 
-            addNotification(true, `A new blog added: ${blogPost.title} by ${blogPost.author}`);
+            props.setNotification(`A new blog added: ${blogPost.title} by ${blogPost.author}`, true);
         } catch (error) {
             console.log(error);
         }
@@ -99,7 +87,7 @@ function App(props) {
     const likeHandler = async (blog) => {
         try {
             props.likeBlog(blog);
-            addNotification(true, 'Liked post');
+            props.setNotification('Liked post', true);
         } catch (error) {
             console.log(error);
         }
@@ -108,7 +96,8 @@ function App(props) {
     const removeHandler = async (blog) => {
         try {
             props.deleteBlog(blog);
-            addNotification(true, 'Post removed');
+            // addNotification(true, 'Post removed');
+            props.setNotification('Post removed', true);
         } catch (error) {
             console.log(error);
         }
@@ -133,7 +122,7 @@ function App(props) {
         return (
             <div>
                 <h2>Log in</h2>
-                <Notification notification={notification} />
+                <Notification notification={props.notification} />
                 <LoginForm loginHandler={loginHandler} username={username} password={password} />
             </div>
         );
@@ -144,7 +133,7 @@ function App(props) {
         <div className="App">
             <div>
                 <h2>Blogs</h2>
-                <Notification notification={notification} />
+                <Notification notification={props.notification} />
                 <div>
                     {props.name} logged in
                     <input type="button" value="logout" onClick={logoutHandler} />
@@ -169,22 +158,24 @@ function App(props) {
 
 const mapStateToProps = (state) => {
     return {
-        blogs    : state.blogs,
-        username : state.login.username,
-        name     : state.login.name,
-        userId   : state.login.userId
+        blogs        : state.blogs,
+        username     : state.login.username,
+        name         : state.login.name,
+        userId       : state.login.userId,
+        notification : state.notification
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        initBlogs  : () => dispatch(initBlogs()),
-        createBlog : (blog) => dispatch(createBlog(blog)),
-        deleteBlog : (blog) => dispatch(deleteBlog(blog)),
-        likeBlog   : (blog) => dispatch(likeBlog(blog)),
-        setUser    : (user) => dispatch(setUser(user)),
-        logout     : () => dispatch(logout()),
-        setToken   : (token) => dispatch(setToken(token))
+        initBlogs       : () => dispatch(initBlogs()),
+        createBlog      : (blog) => dispatch(createBlog(blog)),
+        deleteBlog      : (blog) => dispatch(deleteBlog(blog)),
+        likeBlog        : (blog) => dispatch(likeBlog(blog)),
+        setUser         : (user) => dispatch(setUser(user)),
+        logout          : () => dispatch(logout()),
+        setToken        : (token) => dispatch(setToken(token)),
+        setNotification : (message, success) => dispatch(setNotification(message, success))
     };
 };
 

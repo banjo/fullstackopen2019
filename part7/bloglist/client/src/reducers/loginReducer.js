@@ -1,5 +1,4 @@
 import blogService from '../services/blogs';
-import loginService from '../services/loginService';
 
 const initialState = {
     username : '',
