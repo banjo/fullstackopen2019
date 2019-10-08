@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const Blog = ({ blog, likeHandler, removeHandler, user }) => {
+const Blog = ({ blog, likeHandler, removeHandler, username }) => {
     const [ expand, setExpand ] = useState(false);
 
     const blogStyle = {
@@ -36,7 +36,7 @@ const Blog = ({ blog, likeHandler, removeHandler, user }) => {
 
     const RemoveButton = () => {
         // return button if correct user
-        if (user.username === blog.user.username) {
+        if (username === blog.user.username) {
             return (
                 <div>
                     <button onClick={removeClicked}>Remove</button>

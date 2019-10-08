@@ -10,12 +10,10 @@ import { useField } from './hooks/index';
 import { connect } from 'react-redux';
 
 import { initBlogs, createBlog, deleteBlog, likeBlog } from './reducers/blogsReducer';
+import { setUser, setToken, logout } from './reducers/loginReducer';
 
 function App(props) {
-    const [ blogs, setBlogs ] = useState([ {} ]);
-    const [ user, setUser ] = useState(null);
     const [ notification, setNotification ] = useState({ status: null, success: true, message: '' });
-    // const [ blogPost, setBlogPost ] = useState({ title: '', author: '', url: '' });
     const username = useField('text');
     const password = useField('password');
     const blogTitle = useField('text');
@@ -36,8 +34,8 @@ function App(props) {
         const loggedUserJSON = window.localStorage.getItem('loggedUser');
         if (loggedUserJSON) {
             const user = JSON.parse(loggedUserJSON);
-            blogService.setToken(user.token);
-            setUser(user);
+            props.setToken(user.token);
+            props.setUser(user);
         }
     }, []);
 
@@ -63,8 +61,9 @@ function App(props) {
             // save user locally
             window.localStorage.setItem('loggedUser', JSON.stringify(user));
 
-            blogService.setToken(user.token);
-            setUser(user);
+            props.setToken(user.token);
+            props.setUser(user);
+
             username.reset();
             password.reset();
         } catch (error) {
@@ -74,7 +73,7 @@ function App(props) {
 
     const logoutHandler = async () => {
         window.localStorage.clear();
-        setUser(null);
+        props.logout();
     };
 
     const handleSubmit = async (event) => {
@@ -116,15 +115,21 @@ function App(props) {
     };
 
     // sort blogs for most likes
-    blogs.sort((a, b) => b.likes - a.likes);
+    props.blogs.sort((a, b) => b.likes - a.likes);
 
     // turn blogs to HTML
     const blogItems = props.blogs.map((blog, index) => (
-        <Blog key={index} blog={blog} likeHandler={likeHandler} removeHandler={removeHandler} user={user} />
+        <Blog
+            key={index}
+            blog={blog}
+            likeHandler={likeHandler}
+            removeHandler={removeHandler}
+            username={props.username}
+        />
     ));
 
     // return login if not logged in
-    if (user === null) {
+    if (props.username === '') {
         return (
             <div>
                 <h2>Log in</h2>
@@ -141,7 +146,7 @@ function App(props) {
                 <h2>Blogs</h2>
                 <Notification notification={notification} />
                 <div>
-                    {user.name} logged in
+                    {props.name} logged in
                     <input type="button" value="logout" onClick={logoutHandler} />
                 </div>
                 <br />
@@ -164,7 +169,10 @@ function App(props) {
 
 const mapStateToProps = (state) => {
     return {
-        blogs : state.blogs
+        blogs    : state.blogs,
+        username : state.login.username,
+        name     : state.login.name,
+        userId   : state.login.userId
     };
 };
 
@@ -173,7 +181,10 @@ const mapDispatchToProps = (dispatch) => {
         initBlogs  : () => dispatch(initBlogs()),
         createBlog : (blog) => dispatch(createBlog(blog)),
         deleteBlog : (blog) => dispatch(deleteBlog(blog)),
-        likeBlog   : (blog) => dispatch(likeBlog(blog))
+        likeBlog   : (blog) => dispatch(likeBlog(blog)),
+        setUser    : (user) => dispatch(setUser(user)),
+        logout     : () => dispatch(logout()),
+        setToken   : (token) => dispatch(setToken(token))
     };
 };
 
