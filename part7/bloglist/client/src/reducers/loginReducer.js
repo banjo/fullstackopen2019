@@ -29,6 +29,7 @@ const loginReducer = (state = initialState, action) => {
 };
 
 export const setUser = (user) => {
+
     return (dispatch) => {
         dispatch({
             type : 'SET_USER',

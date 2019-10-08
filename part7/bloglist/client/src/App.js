@@ -7,6 +7,7 @@ import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
 import Notification from './components/Notification';
 import Togglable from './components/Togglable';
+import Users from './components/Users';
 
 import { useField } from './hooks/index';
 import { connect } from 'react-redux';
@@ -132,27 +133,40 @@ function App(props) {
     // return blogs if logged in
     return (
         <div className="App">
-            <div>
-                <h2>Blogs</h2>
-                <Notification />
+            <Router>
                 <div>
-                    {props.name} logged in
-                    <input type="button" value="logout" onClick={logoutHandler} />
-                </div>
-                <br />
-                <Togglable buttonLabel="Create new post">
-                    <BlogForm
-                        handleSubmit={handleSubmit}
-                        blogTitle={blogTitle}
-                        blogAuthor={blogAuthor}
-                        blogUrl={blogUrl}
-                    />
-                </Togglable>
-                <br />
+                    <h2>Blogs</h2>
+                    <Notification />
+                    <div>
+                        {props.name} logged in
+                        <input type="button" value="logout" onClick={logoutHandler} />
+                    </div>
+                    <br />
 
-                <h3>Blog posts</h3>
-                <div>{blogItems}</div>
-            </div>
+                    <Route
+                        exact
+                        path="/"
+                        render={() => (
+                            <div>
+                                <Togglable buttonLabel="Create new post">
+                                    <BlogForm
+                                        handleSubmit={handleSubmit}
+                                        blogTitle={blogTitle}
+                                        blogAuthor={blogAuthor}
+                                        blogUrl={blogUrl}
+                                    />
+                                </Togglable>
+                                <br />
+
+                                <h3>Blog posts</h3>
+                                <div>{blogItems}</div>
+                            </div>
+                        )}
+                    />
+
+                    <Route exact path="/users" render={() => <Users />} />
+                </div>
+            </Router>
         </div>
     );
 }
