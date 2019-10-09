@@ -9,6 +9,7 @@ import Notification from './components/Notification';
 import Togglable from './components/Togglable';
 import Users from './components/Users';
 import User from './components/User';
+import BlogPage from './components/BlogPage';
 
 import { useField } from './hooks/index';
 import { connect } from 'react-redux';
@@ -125,19 +126,15 @@ function App(props) {
         return props.users.find((user) => user.id === id);
     };
 
+    const getBlogById = (id) => {
+        return props.blogs.find((blog) => blog.id === id);
+    };
+
     // sort blogs for most likes
     props.blogs.sort((a, b) => b.likes - a.likes);
 
     // turn blogs to HTML
-    const blogItems = props.blogs.map((blog, index) => (
-        <Blog
-            key={index}
-            blog={blog}
-            likeHandler={likeHandler}
-            removeHandler={removeHandler}
-            username={props.username}
-        />
-    ));
+    const blogItems = props.blogs.map((blog, index) => <Blog blog={blog} />);
 
     // return login if not logged in
     if (props.username === '') {
@@ -189,6 +186,18 @@ function App(props) {
                         exact
                         path="/users/:id"
                         render={({ match }) => <User user={getUserById(match.params.id)} />}
+                    />
+                    <Route
+                        exact
+                        path="/blogs/:id"
+                        render={({ match }) => (
+                            <BlogPage
+                                blog={getBlogById(match.params.id)}
+                                likeHandler={likeHandler}
+                                removeHandler={removeHandler}
+                                username={props.username}
+                            />
+                        )}
                     />
                 </div>
             </Router>

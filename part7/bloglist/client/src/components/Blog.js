@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Blog = ({ blog, likeHandler, removeHandler, username }) => {
-    const [ expand, setExpand ] = useState(false);
-
+const Blog = ({ blog }) => {
     const blogStyle = {
         paddingTop   : 10,
         paddingLeft  : 2,
@@ -13,73 +11,11 @@ const Blog = ({ blog, likeHandler, removeHandler, username }) => {
         marginBottom : 5
     };
 
-    const likeClicked = (event) => {
-        event.preventDefault();
-
-        // stop div from closing
-        event.stopPropagation();
-
-        // add like to database
-        likeHandler({ ...blog, likes: blog.likes + 1 });
-    };
-
-    const removeClicked = (event) => {
-        event.preventDefault();
-
-        if (window.confirm(`Remove post ${blog.title} by ${blog.author}?`)) {
-            removeHandler(blog);
-            setExpand(false);
-        }
-
-        event.stopPropagation();
-    };
-
-    const RemoveButton = () => {
-        // return button if correct user
-        if (username === blog.user.username) {
-            return (
-                <div>
-                    <button onClick={removeClicked}>Remove</button>
-                </div>
-            );
-        }
-
-        return null;
-    };
-
-    // if expanded
-    if (expand) {
-        return (
-            <div style={blogStyle}>
-                <div onClick={() => setExpand(false)}>
-                    <div>
-                        {blog.title} by {blog.author}
-                    </div>
-                    <div>{blog.url}</div>
-                    <div>
-                        {blog.likes} likes <button onClick={likeClicked}>Like</button>
-                    </div>
-                    <div>Added by {blog.user.name}</div>
-                    <RemoveButton />
-                </div>
-            </div>
-        );
-    }
-
-    // if normal state
     return (
         <div style={blogStyle}>
-            <div onClick={() => setExpand(true)}>
-                {blog.title} by {blog.author}
-            </div>
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
         </div>
     );
-};
-
-Blog.propTypes = {
-    blog          : PropTypes.object.isRequired,
-    likeHandler   : PropTypes.func.isRequired,
-    removeHandler : PropTypes.func.isRequired
 };
 
 export default Blog;
