@@ -136,6 +136,16 @@ function App(props) {
     // turn blogs to HTML
     const blogItems = props.blogs.map((blog, index) => <Blog blog={blog} />);
 
+    // Logout component
+    const Logout = () => {
+        return (
+            <div>
+                {props.name} logged in
+                <input type="button" value="logout" onClick={logoutHandler} />
+            </div>
+        );
+    };
+
     // return login if not logged in
     if (props.username === '') {
         return (
@@ -154,11 +164,7 @@ function App(props) {
                 <div>
                     <h2>Blogs</h2>
                     <Notification />
-                    <div>
-                        {props.name} logged in
-                        <input type="button" value="logout" onClick={logoutHandler} />
-                    </div>
-                    <br />
+                    <Logout />
 
                     <Route
                         exact
