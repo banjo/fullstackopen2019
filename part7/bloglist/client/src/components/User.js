@@ -1,15 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
-const User = (props) => {
-    return <div>hello from User</div>;
+const User = ({ user }) => {
+    if (user === undefined) {
+        return null;
+    }
+
+    return (
+        <div>
+            <h2>{user.name}</h2>
+            <h3>Added blogs</h3>
+            <ul>{user.blogs.map((blog) => <li>{blog.title}</li>)}</ul>
+        </div>
+    );
 };
 
-const mapStateToProps = (state) => {
-    return {
-        user  : state.login,
-        blogs : state.blogs
-    };
-};
-
-export default connect(mapStateToProps)(User);
+export default User;

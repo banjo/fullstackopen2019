@@ -30,8 +30,6 @@ const Users = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        login : state.login,
-        blogs : state.blogs,
         users : state.users
     };
 };

@@ -25,7 +25,7 @@ function App(props) {
     const blogAuthor = useField('text');
     const blogUrl = useField('text');
 
-    // init blogs and users
+    // init blogs
     const initBlogs = props.initBlogs;
     useEffect(
         () => {
@@ -34,6 +34,7 @@ function App(props) {
         [ initBlogs ]
     );
 
+    // init users
     const initUsers = props.initUsers;
     useEffect(
         () => {
@@ -121,7 +122,7 @@ function App(props) {
     };
 
     const getUserById = (id) => {
-        return 'TODO';
+        return props.users.find((user) => user.id === id);
     };
 
     // sort blogs for most likes
