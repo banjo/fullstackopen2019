@@ -8,6 +8,7 @@ import BlogForm from './components/BlogForm';
 import Notification from './components/Notification';
 import Togglable from './components/Togglable';
 import Users from './components/Users';
+import User from './components/User';
 
 import { useField } from './hooks/index';
 import { connect } from 'react-redux';
@@ -15,6 +16,7 @@ import { connect } from 'react-redux';
 import { initBlogs, createBlog, deleteBlog, likeBlog } from './reducers/blogsReducer';
 import { setUser, setToken, logout } from './reducers/loginReducer';
 import { setNotification } from './reducers/notificationReducer';
+import { initUsers } from './reducers/usersReducer';
 
 function App(props) {
     const username = useField('text');
@@ -23,7 +25,7 @@ function App(props) {
     const blogAuthor = useField('text');
     const blogUrl = useField('text');
 
-    // init blogs
+    // init blogs and users
     const initBlogs = props.initBlogs;
     useEffect(
         () => {
@@ -32,15 +34,28 @@ function App(props) {
         [ initBlogs ]
     );
 
+    const initUsers = props.initUsers;
+    useEffect(
+        () => {
+            initUsers(props.blogs);
+        },
+        [ initUsers, props.blogs ]
+    );
+
     // get user if stored locally
-    useEffect(() => {
-        const loggedUserJSON = window.localStorage.getItem('loggedUser');
-        if (loggedUserJSON) {
-            const user = JSON.parse(loggedUserJSON);
-            props.setToken(user.token);
-            props.setUser(user);
-        }
-    }, []);
+    const setToken = props.setToken;
+    const setUser = props.setUser;
+    useEffect(
+        () => {
+            const loggedUserJSON = window.localStorage.getItem('loggedUser');
+            if (loggedUserJSON) {
+                const user = JSON.parse(loggedUserJSON);
+                setToken(user.token);
+                setUser(user);
+            }
+        },
+        [ setToken, setUser ]
+    );
 
     // handlers
     const loginHandler = async (event) => {
@@ -105,6 +120,10 @@ function App(props) {
         }
     };
 
+    const getUserById = (id) => {
+        return 'TODO';
+    };
+
     // sort blogs for most likes
     props.blogs.sort((a, b) => b.likes - a.likes);
 
@@ -165,6 +184,11 @@ function App(props) {
                     />
 
                     <Route exact path="/users" render={() => <Users />} />
+                    <Route
+                        exact
+                        path="/users/:id"
+                        render={({ match }) => <User user={getUserById(match.params.id)} />}
+                    />
                 </div>
             </Router>
         </div>
@@ -177,7 +201,8 @@ const mapStateToProps = (state) => {
         username     : state.login.username,
         name         : state.login.name,
         userId       : state.login.userId,
-        notification : state.notification
+        notification : state.notification,
+        users        : state.users
     };
 };
 
@@ -190,6 +215,7 @@ const mapDispatchToProps = (dispatch) => {
         setUser         : (user) => dispatch(setUser(user)),
         logout          : () => dispatch(logout()),
         setToken        : (token) => dispatch(setToken(token)),
+        initUsers       : (blogs) => dispatch(initUsers(blogs)),
         setNotification : (message, success) => dispatch(setNotification(message, success))
     };
 };
