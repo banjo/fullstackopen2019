@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Container, Menu, Button } from 'semantic-ui-react';
 
 import loginService from './services/loginService';
 import Blog from './components/Blog';
@@ -146,6 +147,9 @@ function App(props) {
         );
     };
 
+    // Login component
+    //TODO: FIX LOGIN AND MENU
+
     // return login if not logged in
     if (props.username === '') {
         return (
@@ -159,55 +163,73 @@ function App(props) {
 
     // return blogs if logged in
     return (
-        <div className="App">
-            <Router>
-                <div>
-                    <h2>Blogs</h2>
-                    <Notification />
-                    <Logout />
+        <Container>
+            <div className="App">
+                <Router>
+                    <div>
+                        <Menu>
+                            <Menu.Item link>
+                                <Link to="/" style={{ padding: 5 }}>
+                                    Blogs
+                                </Link>
+                            </Menu.Item>
+                            <Menu.Item link>
+                                <Link to="/users" style={{ padding: 5 }}>
+                                    Users
+                                </Link>
+                            </Menu.Item>
+                            <Menu.Item position="right" className="login">
+                                {props.username !== '' && loggedInUser()}
+                                {props.username === '' && loginForm()}
+                            </Menu.Item>
+                        </Menu>
+                        <h2>Blogs</h2>
+                        <Notification />
+                        <Logout />
 
-                    <Route
-                        exact
-                        path="/"
-                        render={() => (
-                            <div>
-                                <Togglable buttonLabel="Create new post">
-                                    <BlogForm
-                                        handleSubmit={handleSubmit}
-                                        blogTitle={blogTitle}
-                                        blogAuthor={blogAuthor}
-                                        blogUrl={blogUrl}
-                                    />
-                                </Togglable>
-                                <br />
+                        <Route
+                            exact
+                            path="/"
+                            render={() => (
+                                <div>
+                                    <Togglable buttonLabel="Create new post">
+                                        <BlogForm
+                                            handleSubmit={handleSubmit}
+                                            blogTitle={blogTitle}
+                                            blogAuthor={blogAuthor}
+                                            blogUrl={blogUrl}
+                                        />
+                                    </Togglable>
+                                    <br />
 
-                                <h3>Blog posts</h3>
-                                <div>{blogItems}</div>
-                            </div>
-                        )}
-                    />
+                                    <h3>Blog posts</h3>
+                                    <div>{blogItems}</div>
+                                </div>
+                            )}
+                        />
 
-                    <Route exact path="/users" render={() => <Users />} />
-                    <Route
-                        exact
-                        path="/users/:id"
-                        render={({ match }) => <User user={getUserById(match.params.id)} />}
-                    />
-                    <Route
-                        exact
-                        path="/blogs/:id"
-                        render={({ match }) => (
-                            <BlogPage
-                                blog={getBlogById(match.params.id)}
-                                likeHandler={likeHandler}
-                                removeHandler={removeHandler}
-                                username={props.username}
-                            />
-                        )}
-                    />
-                </div>
-            </Router>
-        </div>
+                        <Route exact path="/users" render={() => <Users />} />
+                        <Route
+                            exact
+                            path="/users/:id"
+                            render={({ match }) => <User user={getUserById(match.params.id)} />}
+                        />
+                        <Route
+                            exact
+                            path="/blogs/:id"
+                            render={({ match }) => (
+                                <BlogPage
+                                    blog={getBlogById(match.params.id)}
+                                    likeHandler={likeHandler}
+                                    removeHandler={removeHandler}
+                                    username={props.username}
+                                />
+                            )}
+                        />
+                    </div>
+                </Router>
+            </div>
+        </Container>
     );
 }
 
