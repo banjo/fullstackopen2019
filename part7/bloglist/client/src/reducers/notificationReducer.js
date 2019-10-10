@@ -6,17 +6,17 @@ const initialState = {
 
 const notificationReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'CREATE':
-            return {
-                ...state,
-                status  : true,
-                success : action.data.success,
-                message : action.data.message
-            };
-        case 'REMOVE':
-            return initialState;
-        default:
-            return state;
+    case 'CREATE':
+        return {
+            ...state,
+            status  : true,
+            success : action.data.success,
+            message : action.data.message
+        };
+    case 'REMOVE':
+        return initialState;
+    default:
+        return state;
     }
 };
 

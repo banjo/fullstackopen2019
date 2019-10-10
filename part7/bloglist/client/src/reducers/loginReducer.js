@@ -8,23 +8,23 @@ const initialState = {
 
 const loginReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'SET_USER':
-            return {
-                ...state,
-                username : action.data.username,
-                name     : action.data.name,
-                userId   : action.data.userId,
-                token    : action.data.token
-            };
-        case 'SET_TOKEN':
-            return {
-                ...state,
-                token : action.data
-            };
-        case 'LOGOUT':
-            return initialState;
-        default:
-            return state;
+    case 'SET_USER':
+        return {
+            ...state,
+            username : action.data.username,
+            name     : action.data.name,
+            userId   : action.data.userId,
+            token    : action.data.token
+        };
+    case 'SET_TOKEN':
+        return {
+            ...state,
+            token : action.data
+        };
+    case 'LOGOUT':
+        return initialState;
+    default:
+        return state;
     }
 };
 
