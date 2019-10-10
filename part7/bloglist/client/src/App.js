@@ -149,6 +149,15 @@ function App(props) {
 
     // Login component
     //TODO: FIX LOGIN AND MENU
+    const Login = ({ username, password }) => {
+        return (
+            <div>
+                <h2>Log in</h2>
+                <Notification />
+                <LoginForm loginHandler={loginHandler} username={username} password={password} />
+            </div>
+        );
+    };
 
     // return login if not logged in
     if (props.username === '') {
@@ -179,13 +188,11 @@ function App(props) {
                                 </Link>
                             </Menu.Item>
                             <Menu.Item position="right" className="login">
-                                {props.username !== '' && loggedInUser()}
-                                {props.username === '' && loginForm()}
+                                {props.username !== '' && Logout()}
                             </Menu.Item>
                         </Menu>
                         <h2>Blogs</h2>
                         <Notification />
-                        <Logout />
 
                         <Route
                             exact
