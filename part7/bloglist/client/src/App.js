@@ -105,24 +105,6 @@ function App(props) {
         }
     };
 
-    const likeHandler = async (blog) => {
-        try {
-            props.likeBlog(blog);
-            props.setNotification('Liked post', true);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const removeHandler = async (blog) => {
-        try {
-            props.deleteBlog(blog);
-            props.setNotification('Post removed', true);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     const getUserById = (id) => {
         return props.users.find((user) => user.id === id);
     };
@@ -135,7 +117,7 @@ function App(props) {
     props.blogs.sort((a, b) => b.likes - a.likes);
 
     // turn blogs to HTML
-    const blogItems = props.blogs.map((blog, index) => <Blog blog={blog} />);
+    const blogItems = props.blogs.map((blog, index) => <Blog key={index} blog={blog} />);
 
     // Logout component
     const Logout = () => {
@@ -212,14 +194,7 @@ function App(props) {
                         <Route
                             exact
                             path="/blogs/:id"
-                            render={({ match }) => (
-                                <BlogPage
-                                    blog={getBlogById(match.params.id)}
-                                    likeHandler={likeHandler}
-                                    removeHandler={removeHandler}
-                                    username={props.username}
-                                />
-                            )}
+                            render={({ match }) => <BlogPage blog={getBlogById(match.params.id)} />}
                         />
                     </div>
                 </Router>

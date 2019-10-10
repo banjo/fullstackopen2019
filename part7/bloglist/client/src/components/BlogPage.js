@@ -1,28 +1,61 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-const BlogPage = ({ blog, likeHandler, removeHandler, username }) => {
-    if (blog === undefined) {
+import { deleteBlog, likeBlog, addComment } from '../reducers/blogsReducer';
+import { setNotification } from '../reducers/notificationReducer';
+
+import { useField } from '../hooks/index';
+
+const BlogPage = (props) => {
+    const comment = useField('text');
+
+    if (props.blog === undefined) {
         return null;
     }
+
+    const likeHandler = async (blog) => {
+        try {
+            props.likeBlog(blog);
+            props.setNotification('Liked post', true);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const removeHandler = async (blog) => {
+        try {
+            props.deleteBlog(blog);
+            props.setNotification('Post removed', true);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const commentHandler = (event) => {
+        event.preventDefault();
+
+        props.addComment(props.blog, comment.value);
+        props.setNotification('Added comment', true);
+    };
 
     const likeClicked = (event) => {
         event.preventDefault();
 
         // add like to database
-        likeHandler({ ...blog, likes: blog.likes + 1 });
+        likeHandler({ ...props.blog, likes: props.blog.likes + 1 });
     };
 
     const removeClicked = (event) => {
         event.preventDefault();
 
-        if (window.confirm(`Remove post ${blog.title} by ${blog.author}?`)) {
-            removeHandler(blog);
+        if (window.confirm(`Remove post ${props.blog.title} by ${props.blog.author}?`)) {
+            removeHandler(props.blog);
         }
     };
 
     const RemoveButton = () => {
         // return button if correct user
-        if (username === blog.user.username) {
+        if (props.username === props.blog.user.username) {
             return (
                 <div>
                     <button onClick={removeClicked}>Remove</button>
@@ -36,24 +69,44 @@ const BlogPage = ({ blog, likeHandler, removeHandler, username }) => {
     const Comments = () => (
         <div>
             <h2>Comments</h2>
-            <br />
-            <ul>{blog.comments.map((comment) => <li>{comment}</li>)}</ul>
+            <ul>{props.blog.comments.map((comment, index) => <li key={index}>{comment}</li>)}</ul>
         </div>
     );
 
     return (
         <div>
-            <h2>{blog.title}</h2>
-            <div>{blog.url}</div>
+            <h2>{props.blog.title}</h2>
+            <div>{props.blog.url}</div>
             <div>
-                {blog.likes} likes <button onClick={likeClicked}>Like</button>
+                {props.blog.likes} likes <button onClick={likeClicked}>Like</button>
             </div>
-            <div>Added by {blog.user.name}</div>
+            <div>Added by {props.blog.user.name}</div>
             <RemoveButton />
             <br />
+            <form onSubmit={commentHandler}>
+                <div>
+                    <input {...comment.bind} />
+                    <input type="submit" value="Add comment" />
+                </div>
+            </form>
             <Comments />
         </div>
     );
 };
 
-export default BlogPage;
+const mapStateToProps = (state) => {
+    return {
+        username : state.login.username
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        likeBlog        : (blog) => dispatch(likeBlog(blog)),
+        deleteBlog      : (blog) => dispatch(deleteBlog(blog)),
+        setNotification : (message, success) => dispatch(setNotification(message, success)),
+        addComment      : (blog, comment) => dispatch(addComment(blog, comment))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BlogPage);

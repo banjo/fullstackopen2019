@@ -10,6 +10,8 @@ const blogReducer = (state = [], action) => {
             return action.data;
         case 'LIKE_BLOG':
             return action.data;
+        case 'ADD_COMMENT':
+            return action.data;
         default:
             return state;
     }
@@ -54,6 +56,18 @@ export const likeBlog = (blog) => {
         const blogs = await blogService.getAll();
         dispatch({
             type : 'LIKE_BLOG',
+            data : blogs
+        });
+    };
+};
+
+export const addComment = (blog, comment) => {
+    return async (dispatch) => {
+        blogService.addComment(blog, comment);
+        const blogs = await blogService.getAll();
+
+        dispatch({
+            type : 'ADD_COMMENT',
             data : blogs
         });
     };
