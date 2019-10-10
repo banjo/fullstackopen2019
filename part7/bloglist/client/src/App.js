@@ -147,18 +147,6 @@ function App(props) {
         );
     };
 
-    // Login component
-    //TODO: FIX LOGIN AND MENU
-    const Login = ({ username, password }) => {
-        return (
-            <div>
-                <h2>Log in</h2>
-                <Notification />
-                <LoginForm loginHandler={loginHandler} username={username} password={password} />
-            </div>
-        );
-    };
-
     // return login if not logged in
     if (props.username === '') {
         return (

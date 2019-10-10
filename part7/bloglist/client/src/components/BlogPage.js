@@ -33,6 +33,14 @@ const BlogPage = ({ blog, likeHandler, removeHandler, username }) => {
         return null;
     };
 
+    const Comments = () => (
+        <div>
+            <h2>Comments</h2>
+            <br />
+            <ul>{blog.comments.map((comment) => <li>{comment}</li>)}</ul>
+        </div>
+    );
+
     return (
         <div>
             <h2>{blog.title}</h2>
@@ -42,6 +50,8 @@ const BlogPage = ({ blog, likeHandler, removeHandler, username }) => {
             </div>
             <div>Added by {blog.user.name}</div>
             <RemoveButton />
+            <br />
+            <Comments />
         </div>
     );
 };
