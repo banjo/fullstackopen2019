@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from 'semantic-ui-react';
 
 const Toggable = (props) => {
     const [ visible, setVisible ] = useState(false);
@@ -11,11 +12,15 @@ const Toggable = (props) => {
     return (
         <div>
             <div style={hideWhenVisible}>
-                <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+                <Button primary onClick={toggleVisibility}>
+                    {props.buttonLabel}
+                </Button>
             </div>
             <div style={showWhenVisible}>
                 {props.children}
-                <button onClick={toggleVisibility}>Cancel</button>
+                <Button secondary onClick={toggleVisibility}>
+                    Cancel
+                </Button>
             </div>
         </div>
     );

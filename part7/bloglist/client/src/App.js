@@ -124,7 +124,9 @@ function App(props) {
         return (
             <div>
                 {props.name} logged in
-                <input type="button" value="logout" onClick={logoutHandler} />
+                <Button style={{ padding: 5, margin: 5 }} secondary onClick={logoutHandler}>
+                    Log out
+                </Button>
             </div>
         );
     };

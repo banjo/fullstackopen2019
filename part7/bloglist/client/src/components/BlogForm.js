@@ -1,4 +1,5 @@
 import React from 'react';
+import { Input, Button } from 'semantic-ui-react';
 
 const BlogForm = ({ handleSubmit, blogTitle, blogAuthor, blogUrl }) => {
     return (
@@ -6,15 +7,18 @@ const BlogForm = ({ handleSubmit, blogTitle, blogAuthor, blogUrl }) => {
             <h3>Create new post</h3>
             <form onSubmit={handleSubmit}>
                 <div>
-                    title: <input {...blogTitle.bind} />
+                    title: <Input {...blogTitle.bind} />
                 </div>
                 <div>
-                    author: <input {...blogAuthor.bind} />
+                    author: <Input {...blogAuthor.bind} />
                 </div>
                 <div>
-                    url: <input {...blogUrl.bind} />
+                    url: <Input {...blogUrl.bind} />
                 </div>
-                <input type="submit" value="submit" />
+                <br />
+                <Button primary type="submit">
+                    submit
+                </Button>
             </form>
         </div>
     );

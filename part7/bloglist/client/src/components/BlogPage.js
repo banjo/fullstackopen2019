@@ -6,6 +6,8 @@ import { setNotification } from '../reducers/notificationReducer';
 
 import { useField } from '../hooks/index';
 
+import { Input, Button } from 'semantic-ui-react';
+
 const BlogPage = (props) => {
     const comment = useField('text');
 
@@ -58,7 +60,7 @@ const BlogPage = (props) => {
         if (props.username === props.blog.user.username) {
             return (
                 <div>
-                    <button onClick={removeClicked}>Remove</button>
+                    <Button onClick={removeClicked}>Remove</Button>
                 </div>
             );
         }
@@ -78,15 +80,15 @@ const BlogPage = (props) => {
             <h2>{props.blog.title}</h2>
             <div>{props.blog.url}</div>
             <div>
-                {props.blog.likes} likes <button onClick={likeClicked}>Like</button>
+                {props.blog.likes} likes <Button onClick={likeClicked}>Like</Button>
             </div>
             <div>Added by {props.blog.user.name}</div>
             <RemoveButton />
             <br />
             <form onSubmit={commentHandler}>
                 <div>
-                    <input {...comment.bind} />
-                    <input type="submit" value="Add comment" />
+                    <Input {...comment.bind} />
+                    <Button type="submit">Add comment</Button>
                 </div>
             </form>
             <Comments />
