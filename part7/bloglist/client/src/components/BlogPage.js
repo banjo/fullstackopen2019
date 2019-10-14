@@ -87,7 +87,7 @@ const BlogPage = (props) => {
             <br />
             <form onSubmit={commentHandler}>
                 <div>
-                    <Input {...comment.bind} />
+                    <Input id="comment-input" {...comment.bind} />
                     <Button type="submit">Add comment</Button>
                 </div>
             </form>

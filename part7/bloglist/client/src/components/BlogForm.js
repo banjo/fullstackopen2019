@@ -7,13 +7,13 @@ const BlogForm = ({ handleSubmit, blogTitle, blogAuthor, blogUrl }) => {
             <h3>Create new post</h3>
             <form onSubmit={handleSubmit}>
                 <div>
-                    title: <Input {...blogTitle.bind} />
+                    title: <Input id="title" {...blogTitle.bind} />
                 </div>
                 <div>
-                    author: <Input {...blogAuthor.bind} />
+                    author: <Input id="author" {...blogAuthor.bind} />
                 </div>
                 <div>
-                    url: <Input {...blogUrl.bind} />
+                    url: <Input id="url" {...blogUrl.bind} />
                 </div>
                 <br />
                 <Button primary type="submit">

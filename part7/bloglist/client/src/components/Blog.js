@@ -13,7 +13,7 @@ const Blog = ({ blog }) => {
 
     return (
         <div style={blogStyle}>
-            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+            <Link className="blog-link" to={`/blogs/${blog.id}`}>{blog.title}</Link>
         </div>
     );
 };
